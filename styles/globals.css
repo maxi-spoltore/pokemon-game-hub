@@ -14,3 +14,39 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@font-face {
+  font-family: 'Pokemon_Hollow';
+  src: url('/fonts/pokemon_hollow-webfont.woff2') format('woff2'),
+       url('/fonts/pokemon_hollow-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pokemon_Solid';
+  src: url('/fonts/pokemon_solid-webfont.woff2') format('woff2'),
+       url('/fonts/pokemon_solid-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+.title {
+	font-family: 'Pokemon_Solid';
+  color: yellow;
+  text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+  font-size: 24px;
+  letter-spacing: 20px;
+  margin-left: 10px
+}
+
+.font-pokemon-solid {
+  font-family: 'Pokemon_Solid';
+  color: yellow;
+  text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

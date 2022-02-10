@@ -28,9 +28,7 @@ export default function Game({ gameData }) {
 
 	return (
 		<GameLayout>
-			<h1>{name}</h1>
-			<p>{description}</p>
-			<GameComponent />
+			<GameComponent name={name} description={description} />
 		</GameLayout>
 	)
 }

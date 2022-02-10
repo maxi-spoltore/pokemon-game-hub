@@ -1,8 +1,8 @@
 const GAMES = [
 	{
-		name: 'Game 1',
+		name: 'Pokédex',
 		id: 'game-1',
-		description: 'Game 1 Description',
+		description: 'Name as many pokémon as you can until time runs out!. (1st generation only for now...)',
 		imgUrl: '/images/game-img.png',
 		rootComponent: 'GameOne'
 	},

@@ -32,6 +32,13 @@ a {
 
 }
 
+@font-face {
+  font-family: 'Pixel';
+  src: url('/fonts/Pixel-LCD-7.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .title {
 	font-family: 'Pokemon_Solid';
   color: yellow;
@@ -45,6 +52,10 @@ a {
   font-family: 'Pokemon_Solid';
   color: yellow;
   text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+
+.font-pixel {
+  font-family: 'Pixel'
 }
 
 @tailwind base;

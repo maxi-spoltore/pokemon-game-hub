@@ -1,16 +1,20 @@
 import React from 'react'
-import { useGameDispatch, ActionTypes, gameStatusTypes } from './GameContext'
+import { useGameState, useGameDispatch, ActionTypes } from './GameContext'
 import ActionButton from '../actionButton'
+import MatchList from './MatchList'
 
 const Over = () => {
+	const { matches } = useGameState();
 	const dispatch = useGameDispatch();
 	const handleRestart = () => {
 		dispatch({ type: ActionTypes.RESTART_GAME });
 	}
+
 	return (
 		<div>
 			<h3>Time's up!</h3>
-			<ActionButton text='Play again!' onClick={handleRestart}/>
+			<MatchList matches={matches} />
+			<ActionButton size='large' text='Play again!' onClick={handleRestart}/>
 		</div>
 	)
 }

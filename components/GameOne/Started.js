@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import useSWR from 'swr';
 import { fetcher } from '../../data/api';
-import { useGameState, gameStatusTypes } from './GameContext';
 import LetterCube from './LetterCube';
 import Match from './Match';
 
@@ -11,14 +10,11 @@ const keyCodeMap = {
 	space: 32
 }
 
-
 const Started = () => {
 	const [guess, setGuess] = useState('');
 	const [matches, setMatches] = useState(new Set());
+	const [guessingStarted, setGuessingStarted] = useState(false);
 	const { data, error } = useSWR('https://pokeapi.co/api/v2/pokemon?limit=151', fetcher);
-	const { gameStatus } = useGameState();
-
-	const gameOver = gameStatus === gameStatusTypes.OVER;
 
 	const submitGuess = async () => {
 		if (!guess) return;
@@ -38,10 +34,11 @@ const Started = () => {
 	}
 
 	const handleGuess = e => {
+		setGuessingStarted(true);
 		const { key, keyCode } = e;
 		if (keyCode == keyCodeMap['enter']) return submitGuess();
 		if (keyCode == keyCodeMap['backspace']) return handleBackspace();
-		if (/^[a-zA-Z]$/.test(key)) setGuess(prev => prev.concat(key.toLowerCase()));
+		if (/^[A-Z\-\d]$/i.test(key)) setGuess(prev => prev.concat(key.toLowerCase()));
 	}
 
 	const renderGuess = () => {
@@ -59,7 +56,7 @@ const Started = () => {
 	const renderMatches = () => {
 		const matchesArr = Array.from(matches);
 		return (
-			<div className='flex flex-wrap mt-8 bg-red-200 rounded-lg max-h-[320px] overflow-y-auto'>
+			<div className='flex flex-wrap my-8 bg-red-200 rounded-lg max-h-[320px] overflow-y-auto'>
 				{!!matchesArr.length && matchesArr.map((match, idx) => {
 					const key = `match-${match}-${idx}`;
 					return <Match key={key} data={match} />
@@ -75,16 +72,13 @@ const Started = () => {
 
 	return (
 		<div className='w-full h-[50vh]'>
-			{gameOver 
-				? <h2>Time's up!</h2>
-				: (
-				<div className='w-full h-full'>
-					<div className='flex flex-col items-center w-full h-full mx-auto'>
-						{renderMatches()}
-						{renderGuess()}
-					</div>
+			<div className='w-full h-full'>
+				<div className='flex flex-col items-center w-full h-full mx-auto'>
+					{renderMatches()}
+					{renderGuess()}
+					{!guessingStarted && !guess && !matches.size && <p>Start typing!</p>}
 				</div>
-			)}
+			</div>
 		</div>
 	)
 }

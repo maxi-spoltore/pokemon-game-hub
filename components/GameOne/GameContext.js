@@ -17,7 +17,7 @@ const ActionTypes = {
 
 const initialState = {
 	gameStatus: gameStatusTypes.NON_STARTED,
-	countdownTime: 30000
+	matches: []
 }
 
 const GameContextReducer = (state = initialState, action) => {
@@ -27,10 +27,16 @@ const GameContextReducer = (state = initialState, action) => {
 				...state,
 				gameStatus: action.payload
 			}
+		case ActionTypes.UPDATE_MATCHES:
+			return {
+				...state,
+				matches: [...state.matches, action.payload]
+			}
 		case ActionTypes.RESTART_GAME:
 			return {
 				...state,
-				gameStatus: gameStatusTypes.IN_PROGRESS
+				gameStatus: gameStatusTypes.IN_PROGRESS,
+				matches: []
 			}
 		default:
 			return state;

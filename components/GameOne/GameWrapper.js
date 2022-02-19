@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
+import GameContent from './GameContent';
 import Countdown from 'react-countdown';
-import { useGameState, useGameDispatch, gameStatusTypes, ActionTypes } from './GameContext';
-import NonStarted from './NonStarted';
-import Started from './Started';
-import Over from './Over';
+import { useGameDispatch, ActionTypes, gameStatusTypes } from './GameContext';
 
 const GameWrapper = ({ name, description }) => {
-	const { gameStatus, countdownTime } = useGameState();
+	const [countdown, setCountdown] = useState(false);
 	const dispatch = useGameDispatch();
-
-	const gameInProgress = gameStatus === gameStatusTypes.IN_PROGRESS;
+	const countdownTime = 12000000;
 
 	const handleGameOver = () => {
+		setCountdown(false);
 		dispatch({ type: ActionTypes.UPDATE_GAME_STATUS, payload: gameStatusTypes.OVER })
 	}
 
@@ -29,23 +27,14 @@ const GameWrapper = ({ name, description }) => {
 		}
 	}
 
-	const renderView = type => {
-		switch (type) {
-			case gameStatusTypes.NON_STARTED:
-				return <NonStarted name={name} description={description} />;
-			case gameStatusTypes.IN_PROGRESS:
-				return <Started />;
-			case gameStatusTypes.OVER:
-				return <Over />;
-			default:
-				return <NonStarted name={name} description={description} />;
-		}
-	}
-	
 	return (
-		<div className='w-9/12 mx-auto flex flex-col items-center'>
-			{renderView(gameStatus)}
-			{gameInProgress && (
+		<div className='flex justify-center'>
+			<GameContent
+				name={name}
+				description={description}
+				handleCountdown={setCountdown}
+			/>
+			{countdown && (
 				<div className='w-36 fixed bottom-5 flex justify-center items-center bg-gray-900 p-2 rounded-md'>
 					<Countdown
 						date={Date.now() + countdownTime}

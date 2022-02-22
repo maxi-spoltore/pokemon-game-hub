@@ -26,7 +26,7 @@ const GameContent = ({ name, description, handleCountdown }) => {
 	}, [gameStatus])
 
 	return (
-		<div className='w-9/12 mx-auto flex flex-col items-center'>
+		<div className='w-full flex flex-col items-center'>
 			{renderView(gameStatus)}
 		</div>
 	);

@@ -30,7 +30,7 @@ const GameContextReducer = (state = initialState, action) => {
 		case ActionTypes.UPDATE_MATCHES:
 			return {
 				...state,
-				matches: [...state.matches, action.payload]
+				matches: [...state.matches].concat([action.payload])
 			}
 		case ActionTypes.RESTART_GAME:
 			return {

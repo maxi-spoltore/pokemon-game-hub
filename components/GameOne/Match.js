@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import useSWR from 'swr';
 import { fetcher } from '../../data/api';
 import { useGameDispatch, ActionTypes } from './GameContext';
 
-const Match = ({ data }) => {
+const Match = ({ data, readonly }) => {
 	const dispatch = useGameDispatch();
-	const mappedData = data && data._preFetched ? data : useSWR(data.url, fetcher).data;
+	const mappedData = data && data.url ? useSWR(data.url, fetcher).data : data;
 	const { sprites = {}, name } = mappedData || {};
 
 	useEffect(() => {
-		if (mappedData && !mappedData._preFetched) {
-			mappedData._preFetched = true;
+		if (mappedData && !readonly) {
+			console.log('here')
 			dispatch({ type: ActionTypes.UPDATE_MATCHES, payload: mappedData });
 		}
-	}, [mappedData, data])
+	}, [mappedData])
 
 	return (
 		<div className='flex flex-col items-center m-2 w-36'>
@@ -23,4 +23,4 @@ const Match = ({ data }) => {
 	);
 };
 
-export default Match;
+export default memo(Match);

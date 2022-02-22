@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import useSWR from 'swr';
 import { fetcher } from '../../data/api';
 import LetterCube from './LetterCube';
@@ -15,6 +15,7 @@ const Started = () => {
 	const [matches, setMatches] = useState(new Set());
 	const [guessingStarted, setGuessingStarted] = useState(false);
 	const { data, error } = useSWR('https://pokeapi.co/api/v2/pokemon?limit=151', fetcher);
+	const matchesRef = useRef(null);
 
 	const submitGuess = async () => {
 		if (!guess) return;
@@ -56,7 +57,7 @@ const Started = () => {
 	const renderMatches = () => {
 		const matchesArr = Array.from(matches);
 		return (
-			<div className='flex flex-wrap my-8 bg-red-200 rounded-lg max-h-[320px] overflow-y-auto'>
+			<div ref={matchesRef} className='flex justify-center flex-wrap my-8 bg-red-200 rounded-lg max-h-[320px] overflow-y-auto'>
 				{!!matchesArr.length && matchesArr.map((match, idx) => {
 					const key = `match-${match}-${idx}`;
 					return <Match key={key} data={match} />
@@ -70,10 +71,16 @@ const Started = () => {
 		return () => window.removeEventListener('keydown', handleGuess);
 	});
 
+	useEffect(() => {
+		if (matchesRef && matchesRef.current) {
+			matchesRef.current.scrollTop = matchesRef.current.clientHeight;
+		}
+	}, [matchesRef, matches])
+
 	return (
-		<div className='w-full h-[50vh]'>
+		<div className='w-full h-[70vh]'>
 			<div className='w-full h-full'>
-				<div className='flex flex-col items-center w-full h-full mx-auto'>
+				<div className='w-9/12 flex flex-col items-center w-full h-full mx-auto'>
 					{renderMatches()}
 					{renderGuess()}
 					{!guessingStarted && !guess && !matches.size && <p>Start typing!</p>}

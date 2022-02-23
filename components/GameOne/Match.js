@@ -1,5 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import useSWR from 'swr';
+import Image from 'next/image';
 import { fetcher } from '../../data/api';
 import { useGameDispatch, ActionTypes } from './GameContext';
 
@@ -8,16 +9,17 @@ const Match = ({ data, readonly }) => {
 	const mappedData = data && data.url ? useSWR(data.url, fetcher).data : data;
 	const { sprites = {}, name } = mappedData || {};
 
+	const imgUrl = sprites['front_default'] || '';
+
 	useEffect(() => {
 		if (mappedData && !readonly) {
-			console.log('here')
 			dispatch({ type: ActionTypes.UPDATE_MATCHES, payload: mappedData });
 		}
 	}, [mappedData])
 
 	return (
-		<div className='flex flex-col items-center m-2 w-36'>
-			<img src={sprites['front_default']} alt={name} />
+		<div className='flex flex-col items-center m-2 w-36 '>
+			{imgUrl && <Image src={imgUrl} width={96} height={96} alt={name} quality={100} />}
 			<p className='font-pokemon-solid capitalize tracking-[.15em]'>{name}</p>
 		</div>
 	);

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import useSWR from 'swr';
+import toast from 'react-hot-toast';
 import { fetcher } from '../../data/api';
 import LetterCube from './LetterCube';
 import Match from './Match';
+import Toaster from '../Toaster';
 
 const keyCodeMap = {
 	backspace: 8,
@@ -22,6 +24,10 @@ const Started = () => {
 		const { results: pokemonList } = data || [];
 		const validMatch = pokemonList.find(pokemon => pokemon.name === guess);
 		if (validMatch) {
+			toast.success('Gotcha!', {
+				duration: 1000,
+				position: 'top-center'
+			})
 			setMatches(prev => new Set(prev.add(validMatch)));
 			setGuess('');
 		} 
@@ -66,6 +72,12 @@ const Started = () => {
 		);
 	};
 
+	const GuessPlaceholder = () => (
+		<p className='text-2xl font-bold animate-text-blink'>
+			Start typing!
+		</p>
+	);
+
 	useEffect(() => {
 		window.addEventListener('keydown', handleGuess);
 		return () => window.removeEventListener('keydown', handleGuess);
@@ -83,7 +95,8 @@ const Started = () => {
 				<div className='w-9/12 flex flex-col items-center w-full h-full mx-auto'>
 					{renderMatches()}
 					{renderGuess()}
-					{!guessingStarted && !guess && !matches.size && <p>Start typing!</p>}
+					{!guessingStarted && !guess && !matches.size && <GuessPlaceholder />}
+					<Toaster />
 				</div>
 			</div>
 		</div>

@@ -6,7 +6,7 @@ const MatchList = ({ matches }) => {
 		<div className='flex flex-wrap mt-8 bg-red-200 rounded-lg max-h-[320px] overflow-y-auto'>
 			{!!matches && !!matches.length && matches.map((match, idx) => {
 				const key = `match-${match}-${idx}`;
-				return <Match key={key} data={match} readonly />
+				return <Match key={key} incomingData={{ data: match }} readonly />
 			})}
 		</div>
 	);

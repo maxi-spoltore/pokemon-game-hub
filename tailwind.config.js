@@ -8,12 +8,18 @@ module.exports = {
       animation: {
         'blink-custom': 'blink .5s alternate 7',
         'pokeball': 'fall .25s ease-in-out, shake 1.25s cubic-bezier(.36,.07,.19,.97) 3',
-        'text-blink': 'textBlink 1.5s infinite'
+        'text-blink': 'textBlink 1.5s infinite',
+        'letter': 'letterScale .2s ease-in-out',
+        'letter-error': 'shake 1s cubic-bezier(.36,.07,.19,.97) infinite'
       },
       keyframes: {
         textBlink: {
           '0%, 50%, 100%': { opacity: '.4' },
           '25%, 75%': { opacity: '1' }
+        },
+        letterScale: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.3)' }
         },
         blink: {
           '0%': { background: '#eee' },

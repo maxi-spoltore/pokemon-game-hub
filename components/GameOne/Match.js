@@ -3,10 +3,13 @@ import useSWR from 'swr';
 import Image from 'next/image';
 import { fetcher } from '../../data/api';
 import { useGameDispatch, ActionTypes } from './GameContext';
+import Pokeball from '../Pokeball';
 
-const Match = ({ data, readonly }) => {
+const Match = ({ incomingData, readonly }) => {
 	const dispatch = useGameDispatch();
-	const mappedData = data && data.url ? useSWR(data.url, fetcher).data : data;
+	const { data } = incomingData || {};
+	const { data: mappedData, error } = data && data.url ? useSWR(data.url, fetcher) : incomingData;
+	const isLoading = !error && !mappedData;
 	const { sprites = {}, name } = mappedData || {};
 
 	const imgUrl = sprites['front_default'] || '';
@@ -18,10 +21,27 @@ const Match = ({ data, readonly }) => {
 	}, [mappedData])
 
 	return (
-		<div className='flex flex-col items-center m-2 w-36 '>
-			{imgUrl && <Image src={imgUrl} width={96} height={96} alt={name} quality={100} />}
-			<p className='font-pokemon-solid capitalize tracking-[.15em]'>{name}</p>
-		</div>
+		<>
+			{isLoading ? (
+				<div className='flex justify-center items-center w-[96px] h-[96px]'>
+					<Pokeball size='small' />
+				</div>
+			) : (
+				<div className='flex flex-col items-center m-2 w-36 '>
+					{imgUrl && (
+						<Image
+							src={imgUrl}
+							width={96}
+							height={96}
+							alt={name}
+							quality={100}
+							placeholder='blur'
+							blurDataURL='/images/blur.png'
+							/>)}
+					<p className='font-pokemon-solid capitalize tracking-[.15em]'>{name}</p>
+				</div>
+			)}
+		</>
 	);
 };
 

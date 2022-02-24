@@ -1,12 +1,8 @@
 import React from 'react'
 import { Toaster as BaseToaster, ToastBar } from 'react-hot-toast';
+import Pokeball from './Pokeball';
 
 const Toaster = () => {
-	const toastOptions = {
-		className: 'custom-toaster',
-		duration: 500
-	};
-
 	const containerStyle = {
 		position: 'fixed',
 		top: '70%',
@@ -23,9 +19,7 @@ const Toaster = () => {
 					<ToastBar toast={t} style={toastBarStyle}>
 						{({ message }) => (
 							<div className='flex flex-col items-center'>
-								<div class="pokeball animate-pokeball">
-									<div class="pokeball-button animate-blink-custom"></div>
-								</div>
+								<Pokeball />
 								<div className='font-pokemon-solid tracking-[.15em] mt-4 animate-bounce'>
 									{message}
 								</div>

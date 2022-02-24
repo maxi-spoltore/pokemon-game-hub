@@ -14,6 +14,7 @@ const keyCodeMap = {
 
 const Started = () => {
 	const [guess, setGuess] = useState('');
+	const [wrongGuess, setWrongGuess] = useState(false);
 	const [matches, setMatches] = useState(new Set());
 	const [guessingStarted, setGuessingStarted] = useState(false);
 	const { data, error } = useSWR('https://pokeapi.co/api/v2/pokemon?limit=151', fetcher);
@@ -24,19 +25,21 @@ const Started = () => {
 		const { results: pokemonList } = data || [];
 		const validMatch = pokemonList.find(pokemon => pokemon.name === guess);
 		if (validMatch) {
-			toast.success('Gotcha!', {
-				duration: 1000,
-				position: 'top-center'
+			toast('Gotcha!', {
+				duration: 1000
 			})
 			setMatches(prev => new Set(prev.add(validMatch)));
 			setGuess('');
-		} 
+		} else {
+			setWrongGuess(true);
+		}
 	}
 
 	const handleBackspace = () => {
 		if (guess) {
 			const trimmedGuess = guess.substring(0, guess.length - 1);
 			setGuess(trimmedGuess);
+			if (wrongGuess) setWrongGuess(false);
 		}
 	}
 
@@ -54,7 +57,7 @@ const Started = () => {
 			<div className='flex mt-auto'>
 				{guessArr.map((char, idx) => {
 					const key = `character-${char}-${idx}`;
-					return <LetterCube key={key} char={char} />
+					return <LetterCube key={key} char={char} error={wrongGuess}/>
 				})}
 			</div>
 		);
@@ -66,7 +69,7 @@ const Started = () => {
 			<div ref={matchesRef} className='flex justify-center flex-wrap my-8 bg-red-200 rounded-lg max-h-[320px] overflow-y-auto'>
 				{!!matchesArr.length && matchesArr.map((match, idx) => {
 					const key = `match-${match}-${idx}`;
-					return <Match key={key} data={match} />
+					return <Match key={key} incomingData={{ data: match }} />
 				})}
 			</div>
 		);

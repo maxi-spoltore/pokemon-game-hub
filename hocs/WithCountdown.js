@@ -8,7 +8,7 @@ const WithCountdown = ({ children, ...props }) => {
 
 	const handleGameOver = () => {
 		setCountdown(false);
-		dispatch({ type: ActionTypes.UPDATE_GAME_STATUS, payload: gameStatusTypes.OVER })
+		dispatch({ type: ActionTypes.UPDATE_GAME_STATUS, payload: gameStatusTypes.FINISHING })
 	}
 
 	const renderTimer = ({ minutes, seconds, completed }) => {

@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react'
+import React, { memo, useState } from 'react'
 import { Toaster as BaseToaster, ToastBar } from 'react-hot-toast';
 import Sound from 'react-sound';
 import Pokeball from './Pokeball';
@@ -20,12 +20,6 @@ const Toaster = ({ renderType }) => {
 		setPlayStatus(status);
 	};
 
-	useEffect(() => {
-		if (playStatus === Sound.status.STOPPED) {
-			setTimeout(() => setPlayStatus(Sound.status.PLAYING), 2000);
-		}
-	}, [playStatus])
-
 	return (
 		<BaseToaster containerStyle={containerStyle}>
 			{(t) => (
@@ -43,8 +37,6 @@ const Toaster = ({ renderType }) => {
 										<Sound
 											url='/sounds/success.wav'
 											playStatus={playStatus}
-											onFinishedPlaying={() => handlePlaying(Sound.status.STOPPED)}
-											onStop={() => handlePlaying(Sound.status.PLAYING)}
 										/>
 									</>
 									) : (
@@ -53,8 +45,6 @@ const Toaster = ({ renderType }) => {
 											<Sound
 												url='/sounds/error.wav'
 												playStatus={playStatus}
-												onFinishedPlaying={() => handlePlaying(Sound.status.STOPPED)}
-												onStop={() => handlePlaying(Sound.status.PLAYING)}
 											/>
 										</>
 									)

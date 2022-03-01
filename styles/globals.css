@@ -52,6 +52,10 @@ a {
   font-style: normal;
 }
 
+.fill-screen-vertical {
+  height: calc(100vh - 64px);
+}
+
 .title {
 	font-family: 'Pokemon_Solid';
   color: yellow;

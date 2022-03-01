@@ -10,7 +10,8 @@ module.exports = {
         'pokeball': 'fall .25s ease-in-out, shake 1.25s cubic-bezier(.36,.07,.19,.97) 3',
         'text-blink': 'textBlink 1.5s infinite',
         'letter': 'letterScale .2s ease-in-out',
-        'letter-error': 'shake 1s cubic-bezier(.36,.07,.19,.97) infinite'
+        'letter-error': 'shake 1s cubic-bezier(.36,.07,.19,.97) infinite',
+        'fade': 'fade 1s cubic-bezier(.36,.07,.19,.97) infinite'
       },
       keyframes: {
         textBlink: {
@@ -37,6 +38,10 @@ module.exports = {
           '30%': { transform: 'translate(10px, 0) rotate(20deg)' },
           '50%': { transform: 'translate(-10px, 0) rotate(-10deg)' },
           '60%': { transform: 'translate(10px, 0) rotate(10deg)' }
+        },
+        fade: {
+          '0%, 25%': { opacity: '1' },
+          '100%': { opacity: '0' }
         }
       }
     },

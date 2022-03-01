@@ -6,7 +6,7 @@ const NonStarted = ({ name, description }) => {
 	const dispatch = useGameDispatch();
 
 	const start = () => {
-		dispatch({ type: ActionTypes.UPDATE_GAME_STATUS, payload: gameStatusTypes.IN_PROGRESS });
+		dispatch({ type: ActionTypes.UPDATE_GAME_STATUS, payload: gameStatusTypes.STARTING });
 	}
 
 	return (

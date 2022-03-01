@@ -5,7 +5,7 @@ import WithCountdown from '../../hocs/WithCountdown';
 const GameWrapper = ({ name, description }) => {
 	return (
 		<div className='w-full flex justify-center'>
-			<WithCountdown countdownTime={1000000}>
+			<WithCountdown countdownTime={10000}>
 				{({ setCountdown }) => (
 					<GameContent
 						name={name}

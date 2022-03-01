@@ -5,7 +5,9 @@ const GameDispatchContext = createContext(null);
 
 const gameStatusTypes = {
 	NON_STARTED: 'non_started',
+	STARTING: 'starting',
 	IN_PROGRESS: 'in_progress',
+	FINISHING: 'finishing',
 	OVER: 'over'
 }
 

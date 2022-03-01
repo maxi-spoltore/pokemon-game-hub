@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import useSWR from 'swr';
 import toast from 'react-hot-toast';
+import Sound from 'react-sound';
 import { fetcher } from '../../data/api';
 import LetterCube from './LetterCube';
 import Match from './Match';
@@ -17,6 +18,8 @@ const Started = () => {
 	const [wrongGuess, setWrongGuess] = useState(false);
 	const [matches, setMatches] = useState(new Set());
 	const [guessingStarted, setGuessingStarted] = useState(false);
+	const [backspaceSound, setBackspaceSound] = useState(false);
+	const [toasterType, setToasterType] = useState('');
 	const { data, error } = useSWR('https://pokeapi.co/api/v2/pokemon?limit=151', fetcher);
 	const matchesRef = useRef(null);
 
@@ -25,10 +28,18 @@ const Started = () => {
 		const { results: pokemonList } = data || [];
 		const validMatch = pokemonList.find(pokemon => pokemon.name === guess);
 		if (validMatch) {
-			toast('Gotcha!', {
-				duration: 1000
-			})
-			setMatches(prev => new Set(prev.add(validMatch)));
+			if(!matches.has(validMatch)) {
+				setToasterType('pokeball');
+				toast('Gotcha!', {
+					duration: 1000
+				})
+				setMatches(prev => new Set(prev.add(validMatch)));
+			} else {
+				setToasterType('already-got');
+				toast("You've already got this one!", {
+					duration: 1500
+				});
+			}
 			setGuess('');
 		} else {
 			setWrongGuess(true);
@@ -36,6 +47,7 @@ const Started = () => {
 	}
 
 	const handleBackspace = () => {
+		setBackspaceSound(true);
 		if (guess) {
 			const trimmedGuess = guess.substring(0, guess.length - 1);
 			setGuess(trimmedGuess);
@@ -45,6 +57,8 @@ const Started = () => {
 
 	const handleGuess = e => {
 		setGuessingStarted(true);
+		setBackspaceSound(false);
+		setWrongGuess(false);
 		const { key, keyCode } = e;
 		if (keyCode == keyCodeMap['enter']) return submitGuess();
 		if (keyCode == keyCodeMap['backspace']) return handleBackspace();
@@ -99,7 +113,13 @@ const Started = () => {
 					{renderMatches()}
 					{renderGuess()}
 					{!guessingStarted && !guess && !matches.size && <GuessPlaceholder />}
-					<Toaster />
+					<Toaster renderType={toasterType}/>
+					{backspaceSound && (
+						<Sound
+							url='/sounds/keypress.wav'
+							playStatus={Sound.status.PLAYING}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

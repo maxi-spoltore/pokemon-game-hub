@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import classNames from 'classnames';
+import Sound from 'react-sound';
 
 const LetterCube = ({ char, error }) => {
 	const baseStyle = [
@@ -30,7 +31,17 @@ const LetterCube = ({ char, error }) => {
 		animationStyle
 	);
 
-	return <div className={classes}>{char}</div>
+	return (
+		<>
+			<div className={classes}>{char}</div>
+			{!error && (
+				<Sound
+					url='/sounds/click.wav'
+					playStatus={Sound.status.PLAYING}
+				/>
+			)}
+		</>
+	)
 };
 
-export default LetterCube;
+export default memo(LetterCube);

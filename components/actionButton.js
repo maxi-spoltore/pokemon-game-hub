@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-const ActionButton = ({ text, color = 'bg-red-500', size = 'medium', onClick = () => {}}) => {
+const ActionButton = ({ text, color = 'red', size = 'medium', onClick = () => {}}) => {
 	const btnSize = () => {
 		switch (size) {
 			case 'small':
@@ -11,6 +11,10 @@ const ActionButton = ({ text, color = 'bg-red-500', size = 'medium', onClick = (
 			case 'large':
 				return 'w-72 p-6'
 		}
+	}
+
+	const colorTheme = {
+		red: ['bg-red-500', 'hover:bg-red-600']
 	}
 
 	const btnClasses = classNames(
@@ -23,7 +27,9 @@ const ActionButton = ({ text, color = 'bg-red-500', size = 'medium', onClick = (
 		'uppercase',
 		'flex',
 		'justify-center',
-		'items-center'
+		'items-center',
+		'transition-all',
+		...colorTheme[color]
 	);
 
 	return (

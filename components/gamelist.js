@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function GameList({ gameData }) {
 	const renderGameList = () =>
 		gameData.map((game, i) => {
-			const { name, description, imgUrl } = game || {};
+			const { name, imgUrl } = game || {};
 			const key = `game-${name}-${i}`;
 			return (
 				<Link
@@ -20,7 +20,6 @@ export default function GameList({ gameData }) {
 								<Image src={imgUrl} height={200} width={200} />
 							</div>
 							<h3 className='text-center'>{name}</h3>
-							<p className='text-center'>{description}</p>
 						</div>
 					</a>
 				</Link>

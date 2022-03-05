@@ -83,6 +83,13 @@ a {
 
 .countdown-timer {
   transform: translateY(6px);
+}
+
+.countdown-text-red {
+  color: rgb(255, 103, 96);
+}
+
+.countdown-text-lime {
   color: rgb(163 230 53);
 }
 

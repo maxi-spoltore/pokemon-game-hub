@@ -11,7 +11,8 @@ module.exports = {
         'text-blink': 'textBlink 1.5s infinite',
         'letter': 'letterScale .2s ease-in-out',
         'letter-error': 'shake 1s cubic-bezier(.36,.07,.19,.97) infinite',
-        'fade': 'fade 1s cubic-bezier(.36,.07,.19,.97) infinite'
+        'fade': 'fade 1s cubic-bezier(.36,.07,.19,.97) infinite',
+        'bounce': 'bounce 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
       },
       keyframes: {
         textBlink: {
@@ -42,6 +43,10 @@ module.exports = {
         fade: {
           '0%, 25%': { opacity: '1' },
           '100%': { opacity: '0' }
+        },
+        bounce: {
+          '0%': { transform: 'translateY(40px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
         }
       }
     },

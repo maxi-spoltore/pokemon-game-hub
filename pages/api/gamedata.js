@@ -7,11 +7,11 @@ const GAMES = [
 		rootComponent: 'GameOne'
 	},
 	{
-		name: 'Game 2',
+		name: 'Who is this pokémon?',
 		id: 'game-2',
-		description: 'Game 2 Description',
+		description: 'Guess which pokémon is hiding under the silhouette!. (1st generation only for now...)',
 		imgUrl: '/images/game-img.png',
-		rootComponent: 'GameOne'
+		rootComponent: 'GameTwo'
 	},
 	{
 		name: 'Game 3',

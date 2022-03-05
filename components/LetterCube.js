@@ -1,8 +1,11 @@
 import React, { memo } from 'react';
+import usePrevious from '../hooks/usePrevious';
 import classNames from 'classnames';
 import Sound from 'react-sound';
 
 const LetterCube = ({ char, error }) => {
+	const prevError = usePrevious(error);
+
 	const baseStyle = [
 		'flex',
 		'items-center',
@@ -34,7 +37,7 @@ const LetterCube = ({ char, error }) => {
 	return (
 		<>
 			<div className={classes}>{char}</div>
-			{!error && (
+			{!error && !prevError && (
 				<Sound
 					url='/sounds/click.wav'
 					playStatus={Sound.status.PLAYING}

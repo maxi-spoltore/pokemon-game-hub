@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import Countdown from 'react-countdown';
-import { useGameDispatch, ActionTypes, gameStatusTypes } from '../components/GameOne/GameContext';
 
 const WithCountdown = ({ children, ...props }) => {
 	const [countdown, setCountdown] = useState(false);
-	const dispatch = useGameDispatch();
 
-	const handleGameOver = () => {
+	const handleEnd = () => {
 		setCountdown(false);
-		dispatch({ type: ActionTypes.UPDATE_GAME_STATUS, payload: gameStatusTypes.FINISHING })
-	}
+		if (props.onEnd) props.onEnd();
+	};
 
-	const renderTimer = ({ minutes, seconds, completed }) => {
+	const renderTimer = ({ total, minutes, seconds, completed }) => {
 		if (completed) {
-			handleGameOver();
+			handleEnd();
 			return <></>
 		} else {
 			const formatTime = time => +time < 10 ? `0${time}` : time;
 			const formatMinutes = formatTime(minutes);
 			const formattedSeconds = formatTime(seconds);
+			const withinLimit = (+total / 1000) <= props.closeToEndThreshold;
+
 			return (
-				<span className='countdown-timer font-pixel text-3xl text-lime-400 flex justify-center items-center translate-y-1.5'>
+				<span className={`countdown-timer countdown-text-${withinLimit ? 'red' : 'lime'} font-pixel text-3xl flex justify-center items-center translate-y-1.5`}>
 					{`${formatMinutes}:`}{formattedSeconds}
 				</span>
 			);

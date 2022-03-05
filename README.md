@@ -9,5 +9,4 @@ Base technologies used so far:
 - [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app)
 - [TailwindCSS](https://tailwindcss.com/)
 
-:construction: :soon:
-###  Work in progress... 
+### Work in progress... :construction: :soon:

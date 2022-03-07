@@ -9,7 +9,7 @@ const GAMES = [
 	{
 		name: 'Who is this pokémon?',
 		id: 'game-2',
-		description: 'Guess which pokémon is hiding under the silhouette!. (1st generation only for now...)',
+		description: "Guess the pokémon that is displayed on the screen. Try the hard difficulty, in which you'll only see the silhouette!. (1st generation only for now...)",
 		imgUrl: '/images/game-img.png',
 		rootComponent: 'GameTwo'
 	},

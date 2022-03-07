@@ -1,6 +1,7 @@
 import React from 'react'
 import ActionButton from '../actionButton';
 import { useGameDispatch, ActionTypes, gameStatusTypes } from './GameContext';
+import DifficultySelector from './DifficultySelector';
 
 const NonStarted = ({ name, description }) => {
 	const dispatch = useGameDispatch();
@@ -13,7 +14,8 @@ const NonStarted = ({ name, description }) => {
 		<div className='h-[70vh] flex flex-col items-center'>
 			<h2 className='text-3xl font-bold my-8'>{name}</h2>
 			<p className='text-md mt-4'>{description}</p>
-			<div className='mt-auto'>
+			<div className='mt-auto flex flex-col items-center'>
+				<DifficultySelector />
 				<ActionButton text='Start' size='large' onClick={start} />
 			</div>
 		</div>

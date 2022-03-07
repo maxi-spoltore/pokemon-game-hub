@@ -56,10 +56,12 @@ const Started = () => {
 	}
 
 	const handleGuess = e => {
+		e.preventDefault();
 		setGuessingStarted(true);
 		setBackspaceSound(false);
 		setWrongGuess(false);
 		const { key, keyCode } = e;
+		if (keyCode == keyCodeMap['tab']) return;
 		if (keyCode == keyCodeMap['enter']) return submitGuess();
 		if (keyCode == keyCodeMap['backspace']) return handleBackspace();
 		if (/^[A-Z\-\d]$/i.test(key)) setGuess(prev => prev.concat(key.toLowerCase()));

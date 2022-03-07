@@ -1,46 +1,58 @@
-import React, { useState, useEffect, useRef } from 'react'
-import useSWR from 'swr';
+import React, { useState, useEffect } from 'react'
+import { get } from 'axios';
 import toast from 'react-hot-toast';
 import Sound from 'react-sound';
-import { fetcher } from '../../data/api';
+import { useGameState, useGameDispatch, ActionTypes } from './GameContext';
 import LetterCube from '../LetterCube';
-import Match from './Match';
 import Toaster from '../Toaster';
+import { generateRandomId } from '../../utils/utils';
+import GuessBoard from './GuessBoard';
 
 const keyCodeMap = {
 	backspace: 8,
 	enter: 13,
-	space: 32
+	space: 32,
+	tab: 9
 }
 
 const Started = () => {
+	const [currentPokemon, setCurrentPokemon] = useState(null);
 	const [guess, setGuess] = useState('');
+	const [showImg, setShowImg] = useState(false);
 	const [wrongGuess, setWrongGuess] = useState(false);
-	const [matches, setMatches] = useState(new Set());
+	const [matchesIds, setMatchesIds] = useState(new Set());
 	const [guessingStarted, setGuessingStarted] = useState(false);
 	const [backspaceSound, setBackspaceSound] = useState(false);
-	const [toasterType, setToasterType] = useState('');
-	const { data, error } = useSWR('https://pokeapi.co/api/v2/pokemon?limit=151', fetcher);
-	const matchesRef = useRef(null);
+	const { difficulty } = useGameState();
+	const dispatch = useGameDispatch();
+
+	const handleShowImg = val => {
+		if (difficulty !== 'hard') return;
+		setShowImg(val);
+	};
+
+	const handleGuessState = () => {
+		dispatch({ type: ActionTypes.UPDATE_MATCHES, payload: currentPokemon });
+		setMatchesIds(prev => new Set(prev.add(currentPokemon.id)));
+		setGuess('');
+	};
 
 	const submitGuess = async () => {
-		if (!guess) return;
-		const { results: pokemonList } = data || [];
-		const validMatch = pokemonList.find(pokemon => pokemon.name === guess);
+		if (!guess || !currentPokemon) return;
+		const validMatch = currentPokemon.name === guess;
 		if (validMatch) {
-			if(!matches.has(validMatch)) {
-				setToasterType('pokeball');
-				toast('Gotcha!', {
-					duration: 1000
-				})
-				setMatches(prev => new Set(prev.add(validMatch)));
+			toast('Gotcha!', {
+				duration: 1000
+			})
+			if (difficulty === 'hard') {
+				handleShowImg(true);
+				setTimeout(() => {
+					handleGuessState();
+				}, 1000)
 			} else {
-				setToasterType('already-got');
-				toast("You've already got this one!", {
-					duration: 1500
-				});
+				handleShowImg(true);
+				handleGuessState();
 			}
-			setGuess('');
 		} else {
 			setWrongGuess(true);
 		}
@@ -56,10 +68,12 @@ const Started = () => {
 	}
 
 	const handleGuess = e => {
+		e.preventDefault();
 		setGuessingStarted(true);
 		setBackspaceSound(false);
 		setWrongGuess(false);
 		const { key, keyCode } = e;
+		if (keyCode == keyCodeMap['tab']) return;
 		if (keyCode == keyCodeMap['enter']) return submitGuess();
 		if (keyCode == keyCodeMap['backspace']) return handleBackspace();
 		if (/^[A-Z\-\d]$/i.test(key)) setGuess(prev => prev.concat(key.toLowerCase()));
@@ -77,16 +91,10 @@ const Started = () => {
 		);
 	};
 
-	const renderMatches = () => {
-		const matchesArr = Array.from(matches);
+	const renderCount = () => {
 		return (
-			<div ref={matchesRef} className='flex justify-center flex-wrap my-8 bg-red-200 rounded-lg max-h-[320px] overflow-y-auto'>
-				{!!matchesArr.length && matchesArr.map((match, idx) => {
-					const key = `match-${match}-${idx}`;
-					return <Match key={key} incomingData={{ data: match }} />
-				})}
-			</div>
-		);
+			<p className='my-4 text-xl font-bold text-red-700'>Pokémon caught: {matchesIds.size}</p>
+		)
 	};
 
 	const GuessPlaceholder = () => (
@@ -101,19 +109,37 @@ const Started = () => {
 	});
 
 	useEffect(() => {
-		if (matchesRef && matchesRef.current) {
-			matchesRef.current.scrollTop = matchesRef.current.clientHeight;
-		}
-	}, [matchesRef, matches])
+		const id = generateRandomId(matchesIds);
+		const fetchPokemon = async () => {
+			try {
+				const { data } = await get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+				setCurrentPokemon(data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		fetchPokemon();
+	}, [matchesIds])
+
+	useEffect(() => {
+		handleShowImg(false);
+	}, [currentPokemon]);
+
+	useEffect(() => {
+		if (difficulty === 'normal') {
+			setShowImg(true);
+		};
+	}, [difficulty]);
 
 	return (
 		<div className='w-full h-[70vh]'>
 			<div className='w-full h-full'>
 				<div className='w-9/12 flex flex-col items-center w-full h-full mx-auto'>
-					{renderMatches()}
+					{renderCount()}
+					{currentPokemon && <GuessBoard pokemonImgs={currentPokemon.sprites} show={showImg} />}
 					{renderGuess()}
-					{!guessingStarted && !guess && !matches.size && <GuessPlaceholder />}
-					<Toaster renderType={toasterType}/>
+					{!guessingStarted && !guess && !matchesIds.size && <GuessPlaceholder />}
+					<Toaster renderType={'pokeball'}/>
 					{backspaceSound && (
 						<Sound
 							url='/sounds/keypress.wav'

@@ -11,19 +11,31 @@ const gameStatusTypes = {
 	OVER: 'over'
 }
 
+const gameDifficulties = {
+	NORMAL: 'normal',
+	HARD: 'hard',
+}
+
 const ActionTypes = {
+	SET_GAME_DIFFICULTY: 'set_game_difficulty',
 	UPDATE_GAME_STATUS: 'update_game_status',
 	UPDATE_MATCHES: 'update_matches',
 	RESTART_GAME: 'restart_game'
 }
 
 const initialState = {
+	difficulty: gameDifficulties.NORMAL,
 	gameStatus: gameStatusTypes.NON_STARTED,
 	matches: []
 }
 
 const GameContextReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case ActionTypes.SET_GAME_DIFFICULTY:
+			return {
+				...state,
+				difficulty: action.payload
+			}
 		case ActionTypes.UPDATE_GAME_STATUS:
 			return {
 				...state,
@@ -37,7 +49,7 @@ const GameContextReducer = (state = initialState, action) => {
 		case ActionTypes.RESTART_GAME:
 			return {
 				...state,
-				gameStatus: gameStatusTypes.IN_PROGRESS,
+				gameStatus: gameStatusTypes.STARTING,
 				matches: []
 			}
 		default:
@@ -73,4 +85,4 @@ const useGameDispatch = () => {
 	return context;
 };
 
-export { GameContextProvider, useGameState, useGameDispatch, gameStatusTypes, ActionTypes }
+export { GameContextProvider, useGameState, useGameDispatch, gameStatusTypes, gameDifficulties, ActionTypes }

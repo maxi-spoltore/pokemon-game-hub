@@ -1,24 +1,26 @@
+import axios from 'axios';
+
 const GAMES = [
 	{
 		name: 'Pokédex',
 		id: 'game-1',
 		description: 'Name as many pokémon as you can until time runs out!. (1st generation only for now...)',
 		imgUrl: '/images/game-img.png',
-		rootComponent: 'GameOne'
+		rootComponent: 'Pokedex'
 	},
 	{
 		name: 'Who is this pokémon?',
 		id: 'game-2',
 		description: "Guess the pokémon that is displayed on the screen. Try the hard difficulty, in which you'll only see the silhouette!. (1st generation only for now...)",
 		imgUrl: '/images/game-img.png',
-		rootComponent: 'GameTwo'
+		rootComponent: 'GuessPokemon'
 	},
 	{
-		name: 'Game 3',
+		name: 'Soup Safari',
 		id: 'game-3',
-		description: 'Game 3 Description',
+		description: 'Find all pokémon hidden inside this awesome letter soup Safari. You can select all the pokemon types you want! (1st generation only for now...)',
 		imgUrl: '/images/game-img.png',
-		rootComponent: 'GameOne'
+		rootComponent: 'SoupSafari'
 	},
 	{
 		name: 'Game 4',

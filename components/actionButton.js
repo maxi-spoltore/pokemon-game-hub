@@ -6,7 +6,8 @@ const ActionButton = ({
 	color = 'red',
 	size = 'medium',
 	active,
-	onClick = () => {}
+	onClick = () => {},
+	disabled
 }) => {
 	const btnSize = () => {
 		switch (size) {
@@ -22,11 +23,11 @@ const ActionButton = ({
 	const colorTheme = {
 		red: {
 			base: ['bg-red-500', 'hover:bg-red-500'],
-			active: ['bg-red-600']
+			active: ['bg-red-600', 'hover:bg-red-500']
 		},
 		lightRed: {
 			base: ['bg-red-300', 'hover:bg-red-500'],
-			active: ['bg-red-600']
+			active: ['bg-red-600', 'hover:bg-red-500']
 		},
 	}
 
@@ -40,14 +41,15 @@ const ActionButton = ({
 		'justify-center',
 		'items-center',
 		'transition-all',
-		...colorTheme[color].base,
-		...(active ? colorTheme[color].active : [])
+		...(!active ? colorTheme[color].base : []),
+		...(active ? colorTheme[color].active : []),
 	);
 
 	return (
 		<button
 			className={btnClasses}
 			onClick={onClick}
+			disabled={disabled}
 		>
 			{text || ''}
 		</button>

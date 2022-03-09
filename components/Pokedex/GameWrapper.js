@@ -1,7 +1,7 @@
 import React from 'react';
 import GameContent from './GameContent';
 import WithCountdown from '../../hocs/WithCountdown';
-import { useGameDispatch, ActionTypes, gameStatusTypes } from '../GameOne/GameContext';
+import { useGameDispatch, ActionTypes, gameStatusTypes } from './GameContext';
 
 const GameWrapper = ({ name, description }) => {
 	const dispatch = useGameDispatch();

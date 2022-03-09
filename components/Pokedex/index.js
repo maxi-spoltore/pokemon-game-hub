@@ -2,7 +2,7 @@ import React from 'react';
 import { GameContextProvider } from './GameContext';
 import GameWrapper from './GameWrapper';
 
-const GameOne = ({ name, description }) => {
+const Pokedex = ({ name, description }) => {
 	return (
 		<GameContextProvider>
 			<GameWrapper name={name} description={description} />
@@ -10,4 +10,4 @@ const GameOne = ({ name, description }) => {
 	);
 };
 
-export default GameOne;
+export default Pokedex;

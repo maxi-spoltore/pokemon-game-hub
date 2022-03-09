@@ -49,8 +49,9 @@ const GameContextReducer = (state = initialState, action) => {
 		case ActionTypes.RESTART_GAME:
 			return {
 				...state,
-				gameStatus: gameStatusTypes.STARTING,
-				matches: []
+				gameStatus: gameStatusTypes.NON_STARTED,
+				matches: [],
+				difficulty: gameDifficulties.NORMAL
 			}
 		default:
 			return state;

@@ -7,3 +7,8 @@ export const generateRandomId = (nonValidIds) => {
 	
 	return id;
 };
+
+export const unslugify = str => {
+	if (!str || typeof str !== 'string') return;
+	return str.replace('-', ' ');
+};

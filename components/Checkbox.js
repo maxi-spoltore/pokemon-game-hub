@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { unslugify } from '../utils/utils';
 
-const Checkbox = ({ label, componentMapping, onChange }) => {
-	const { labelFormat } = componentMapping || {};
+const Checkbox = ({ label, groupName, componentAttributes, onChange }) => {
+	const { labelFormat } = componentAttributes || {};
 
 	const inputId = `checkbox-${label}`;
 
@@ -43,10 +43,10 @@ const Checkbox = ({ label, componentMapping, onChange }) => {
 	]);
 
 	return (
-		<div class="flex">
-			<div class="flex items-center">
-				<input className={inputClasses} type="checkbox" value="" id={inputId} onChange={(e) => onChange(e, label)} />
-				<label class="ml-1 text-gray-800 cursor-pointer" htmlFor={inputId}>
+		<div className="flex">
+			<div className="flex items-center">
+				<input className={inputClasses} type="checkbox" value="" id={inputId} onChange={(e) => onChange(e, label, groupName)} />
+				<label className="ml-1 text-gray-800 cursor-pointer" htmlFor={inputId}>
 					{formatLabel()}
 				</label>
 			</div>

@@ -13,8 +13,6 @@ const DifficultySelector = () => {
 		dispatch({ type: ActionTypes.SET_GAME_DIFFICULTY, payload: name });
 	};
 
-	console.log({ selectedDifficulty });
-
 	return (
 		<div className='flex items-center bg-red-300 p-3 mb-8 rounded-xl'>
 			<h5 className='mr-2'>Select difficulty:</h5>

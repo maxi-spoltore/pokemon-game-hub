@@ -9,7 +9,7 @@ const ENDPOINTS = {
   generation: '/generation'
 }
 
-const useTypes = endpointName => {
+const usePokemonData = endpointName => {
   if (!endpointName) return null;
 
   const url = `${BASE_URL}${ENDPOINTS[endpointName]}`
@@ -23,4 +23,4 @@ const useTypes = endpointName => {
   }
 }
 
-export default useTypes;
+export default usePokemonData;

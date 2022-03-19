@@ -1,31 +1,54 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useGameDispatch, ActionTypes } from './GameContext';
 import Checkbox from '../Checkbox';
 
-const CheckboxList = ({ data = [], labelName, componentMapping }) => {
-	const [selectedBoxes, setSelectedBoxes] = useState([]);
+const findOption = (options, field, value) => {
+	const condition = item => item[field] === value;
+	const option = options.reduce((prev, curr) => {
+		const { data } = curr;
+		return prev || data.find(condition);
+	}, undefined);
+
+	return option;
+};
+
+const CheckboxList = ({ options = [], labelName, componentAttributes }) => {
+	const dispatch = useGameDispatch();
+
+	const gridCols = options.length;
 
 	const handleSelectBox = (e, label) => {
 		const isChecked = e?.target?.checked;
-		const targetData = data.find(item => item[labelName] === label);
+		const targetData = findOption(options, labelName, label);
 		if (isChecked) {
-			setSelectedBoxes(prev => [...prev, targetData])
+			dispatch({ type: ActionTypes.ADD_GAME_OPTION, payload: targetData });
 		} else {
-			setSelectedBoxes(selectedBoxes.filter(item => item[labelName] !== label))
+			dispatch({ type: ActionTypes.REMOVE_GAME_OPTION, payload: { matchField: labelName, matchValue: targetData[labelName] } });
 		}
 	}
 
-	const renderCheckboxes = () => {
+	const renderCheckboxes = (optionGroup) => {
+		const { name, data } = optionGroup;
 		return data.map((item, idx) => {
 			const label = item[labelName] || '';
 			const key = `checkbox-item--${labelName}--${idx}`;
-			return <Checkbox key={key} label={label} componentMapping={componentMapping} onChange={handleSelectBox} />
+			return <Checkbox key={key} label={label} groupName={name} groupcomponentAttributes={componentAttributes} onChange={handleSelectBox} />
 		})
 	}
 
 	return (
-		<div>
-			<form>
-				{renderCheckboxes()}
+		<div className='w-9/12 m-auto'>
+			<form className={`grid grid-cols-${gridCols}`}>
+				{options.map((optionGroup, idx) => {
+					const { name } = optionGroup;
+					const key = `checkbox-group--${name}--${idx}`;
+					return (
+						<div key={key} className='w-full flex flex-col items-center'>
+							<h5>{name}</h5>
+							{renderCheckboxes(optionGroup)}
+						</div>
+					);
+				})}
 			</form>
 		</div>
 	)

@@ -11,47 +11,40 @@ const gameStatusTypes = {
 	OVER: 'over'
 }
 
-const gameDifficulties = {
-	NORMAL: 'normal',
-	HARD: 'hard',
-}
-
 const ActionTypes = {
-	SET_GAME_DIFFICULTY: 'set_game_difficulty',
 	UPDATE_GAME_STATUS: 'update_game_status',
-	UPDATE_MATCHES: 'update_matches',
+	ADD_GAME_OPTION: 'add_game_option',
+	REMOVE_GAME_OPTION: 'remove_game_option',
 	RESTART_GAME: 'restart_game'
 }
 
 const initialState = {
-	difficulty: gameDifficulties.NORMAL,
 	gameStatus: gameStatusTypes.NON_STARTED,
-	matches: []
+	selectedOptions: []
 }
 
 const GameContextReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case ActionTypes.SET_GAME_DIFFICULTY:
-			return {
-				...state,
-				difficulty: action.payload
-			}
 		case ActionTypes.UPDATE_GAME_STATUS:
 			return {
 				...state,
 				gameStatus: action.payload
 			}
-		case ActionTypes.UPDATE_MATCHES:
+		case ActionTypes.ADD_GAME_OPTION:
 			return {
 				...state,
-				matches: [...state.matches].concat([action.payload])
+				selectedOptions: [...state.selectedOptions, action.payload]
+			}
+		case ActionTypes.REMOVE_GAME_OPTION:
+			const { matchField, matchValue } = action.payload;
+			return {
+				...state,
+				selectedOptions: [...state.selectedOptions.filter(option => option[matchField] !== matchValue)]
 			}
 		case ActionTypes.RESTART_GAME:
 			return {
 				...state,
-				gameStatus: gameStatusTypes.NON_STARTED,
-				matches: [],
-				difficulty: gameDifficulties.NORMAL
+				gameStatus: gameStatusTypes.NON_STARTED
 			}
 		default:
 			return state;
@@ -86,4 +79,4 @@ const useGameDispatch = () => {
 	return context;
 };
 
-export { GameContextProvider, useGameState, useGameDispatch, gameStatusTypes, gameDifficulties, ActionTypes }
+export { GameContextProvider, useGameState, useGameDispatch, gameStatusTypes, ActionTypes }

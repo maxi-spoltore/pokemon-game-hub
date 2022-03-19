@@ -14,8 +14,9 @@ const getNormalizer = name => {
 const normalizeData = (data, name) => {
 	const normalize = getNormalizer(name);
 	const normalizedData = normalize(data);
+	const normalizedDataMappedType = normalizedData.map(data => ({...data, type: name }))
 
-	return normalizedData;
+	return normalizedDataMappedType;
 };
 
 export default normalizeData;

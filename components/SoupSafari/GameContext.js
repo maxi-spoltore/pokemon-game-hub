@@ -15,12 +15,14 @@ const ActionTypes = {
 	UPDATE_GAME_STATUS: 'update_game_status',
 	ADD_GAME_OPTION: 'add_game_option',
 	REMOVE_GAME_OPTION: 'remove_game_option',
+	SET_POKEMON_LIST: 'set_pokemon_list',
 	RESTART_GAME: 'restart_game'
 }
 
 const initialState = {
-	gameStatus: gameStatusTypes.NON_STARTED,
-	selectedOptions: []
+	gameStatus: gameStatusTypes.IN_PROGRESS,
+	selectedOptions: [],
+	pokemonList: []
 }
 
 const GameContextReducer = (state = initialState, action) => {
@@ -40,6 +42,11 @@ const GameContextReducer = (state = initialState, action) => {
 			return {
 				...state,
 				selectedOptions: [...state.selectedOptions.filter(option => option[matchField] !== matchValue)]
+			}
+		case ActionTypes.SET_POKEMON_LIST:
+			return {
+				...state,
+				pokemonList: action.payload
 			}
 		case ActionTypes.RESTART_GAME:
 			return {

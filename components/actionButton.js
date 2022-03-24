@@ -43,6 +43,7 @@ const ActionButton = ({
 		'transition-all',
 		...(!active ? colorTheme[color].base : []),
 		...(active ? colorTheme[color].active : []),
+		...(disabled ? ['cursor-not-allowed'] : [])
 	);
 
 	return (

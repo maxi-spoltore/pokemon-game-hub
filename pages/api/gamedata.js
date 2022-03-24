@@ -16,7 +16,7 @@ const GAMES = [
 	{
 		name: 'Soup Safari',
 		id: 'game-3',
-		description: 'Find all pokémon hidden inside this awesome letter soup Safari. You can select all the pokemon types you want! (1st generation only for now...)',
+		description: 'Find all pokémon hidden inside this awesome letter soup Safari. You can select all the pokemon types and generations you want!',
 		imgUrl: '/images/game-img.png',
 		rootComponent: 'SoupSafari'
 	},

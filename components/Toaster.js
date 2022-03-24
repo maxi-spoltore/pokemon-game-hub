@@ -34,7 +34,7 @@ const Toaster = ({ renderType }) => {
 										/>
 									</>
 									) : (
-										<div className='text-xl font-bold text-red-700'>{message}</div>
+										<div className='text-xl text-center font-bold text-red-700'>{message}</div>
 									)
 								}
 							</>

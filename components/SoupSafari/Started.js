@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
+import classNames from 'classnames';
 import { useGameState } from './GameContext';
 
 const wordsearch = require('wordsearch');
@@ -544,19 +545,16 @@ const initialSelectedPoints = {
 };
 
 const Started = () => {
+	const [grid, setGrid] = useState([]);
 	const [selectedPoints, setSelectedPoints] = useState(initialSelectedPoints);
 	const [selectionStarted, setSelectionStarted] = useState(false);
 	const [selectionEnded, setSelectionEnded] = useState(false);
-	// const { pokemonList } = useGameState();
-	// const pokemonNames = pokemonList.map(pokemon => pokemon.name);
-	// const matrix = wordsearch(pokemonNames, 15, 15);
-	// console.log(matrix);
-	const { grid } = matrixMock;
-	const gridWithCoords = grid.map((row, y) => {
-		return row.map((cell, x) => ({ char: cell, x, y }))
-	});
-	const flattenedGrid = gridWithCoords.reduce((acc, val) => acc.concat(val), []);
-	// console.log({ flattenedGrid });
+	const [matchingCells, setMatchingCells] = useState(new Set());
+	const [foundWords, setFoundWords] = useState(new Set());
+	const { pokemonList } = useGameState();
+	const pokemonNames = pokemonList.map(pokemon => pokemon.name);
+
+	const flattenedGrid = grid.reduce((acc, val) => acc.concat(val), []) || [];
 
 	const handleCellSelection = (e, cell, type) => {
 		e.preventDefault();
@@ -570,43 +568,154 @@ const Started = () => {
 		}
 	};
 
+	const findWordMatch = (selectedPoints, direction) => {
+		const { start, end } = selectedPoints;
+		const { x: startX, y: startY } = start;
+		const { x: endX, y: endY } = end;
+		const word = '';
+		const selectedCells = [];
+
+		switch (direction) {
+			case directions.HORIZONTAL:
+				for (let i = startX; i <= endX; i++) {
+					word += grid[startY][i].char;
+					selectedCells.push(`x${i}y${startY}`);
+				}
+				break;
+			case directions.HORIZONTAL_REVERSE:
+				for (let i = startX; i >= endX; i--) {
+					word += grid[startY][i].char;
+					selectedCells.push(`x${i}y${startY}`);
+				}
+				break;
+			case directions.VERTICAL:
+				for (let i = startY; i <= endY; i++) {
+					word += grid[i][startX].char;
+					selectedCells.push(`x${startX}y${i}`);
+				}
+				break;
+			case directions.VERTICAL_REVERSE:
+				for (let i = startY; i >= endY; i--) {
+					word += grid[i][startX].char;
+					selectedCells.push(`x${startX}y${i}`);
+				}
+				break;
+			case directions.DIAGONAL_LTR_UTD:
+				for (let i = startX, j = startY; i <= endX, j <= endY; i++, j++) {
+					word += grid[j][i].char;
+					selectedCells.push(`x${i}y${j}`);
+				}
+				break;
+			case directions.DIAGONAL_RTL_DTU:
+				for (let i = startX, j = startY; i >= endX, j >= endY; i--, j--) {
+					word += grid[j][i].char;
+					selectedCells.push(`x${i}y${j}`);
+				}
+				break;
+			case directions.DIAGONAL_LTR_DTU:
+				for (let i = startY, j = startX; i >= endY, j <= endX; i--, j++) {
+					word += grid[i][j].char;
+					selectedCells.push(`x${j}y${i}`);
+				}
+				break;
+			case directions.DIAGONAL_RTL_UTD:
+				for (let i = startY, j = startX; i <= endY, j >= endX; i++, j--) {
+					word += grid[i][j].char;
+					selectedCells.push(`x${j}y${i}`);
+				}
+				break;
+			default: {
+
+			}
+		};
+
+		if (pokemonNames.includes(word)) {
+			setFoundWords(prev => new Set(prev.add(word)));
+			selectedCells.forEach(cell => setMatchingCells(prev => new Set(prev.add(cell))))
+		}
+
+	};
+
 	const handleWordMatch = selectedPoints => {
-		console.log({ selectedPoints });
 		const { start, end } = selectedPoints;
 		const { char: startChar, x: startX, y: startY } = start;
 		const { char: endChar, x: endX, y: endY } = end;
-		let direction;
+		let dir;
 		switch (true) {
 			case startX < endX && startY === endY:
-				direction = directions.HORIZONTAL;
+				dir = directions.HORIZONTAL;
 				break;
 			case startX > endX && startY === endY:
-				direction = directions.HORIZONTAL_REVERSE;
+				dir = directions.HORIZONTAL_REVERSE;
 				break;
 			case startY < endY && startX === endX:
-				direction = directions.VERTICAL;
+				dir = directions.VERTICAL;
 				break;
 			case startY > endY && startX === endX:
-				direction = directions.VERTICAL_REVERSE;
+				dir = directions.VERTICAL_REVERSE;
 				break;
 			case startX < endX && startY < endY && (endX - startX) === (endY - startY):
-				direction = directions.DIAGONAL_LTR_UTD;
+				dir = directions.DIAGONAL_LTR_UTD;
 				break;
 			case startX > endX && startY > endY && (startX - endX) === (startY - endY):
-				direction = directions.DIAGONAL_RTL_DTU;
+				dir = directions.DIAGONAL_RTL_DTU;
 				break;
 			case startX > endX && startY < endY && (startX - endX) === (endY - startY):
-				direction = directions.DIAGONAL_RTL_UTD;
+				dir = directions.DIAGONAL_RTL_UTD;
 				break;
 			case startX < endX && startY > endY && (endX - startX) === (startY - endY):
-				direction = directions.DIAGONAL_RTL_DTU;
+				dir = directions.DIAGONAL_LTR_DTU;
 				break;
 			default:
 				return false;
 		}
-		console.log({ direction });
-		return direction;
+		findWordMatch(selectedPoints, dir);
+	};
+
+	const getCellClasses = cellId => {
+		return classNames([
+			'w-[20px]',
+			'md:w-[32px]',
+			'h-[20px]',
+			'md:h-[32px]',
+			'flex',
+			'justify-center',
+			'items-center',
+			'text-sm',
+			'md:text-xl',
+			'font-bold',
+			'border',
+			'hover:border-red-500',
+			'cursor-pointer',
+			...(matchingCells.has(cellId) ? ['bg-red-500', 'text-slate-100'] : []),
+			'hover:bg-red-500',
+			'hover:text-white'
+		])
+	};
+
+	const getWordClasses = word => {
+		const matchingWord = foundWords.has(word);
+		return classNames([
+			'text-xl',
+			'font-bold',
+			...(matchingWord ? ['line-through', 'decoration-2', 'text-black'] : ['text-red-500'])
+		])
 	}
+
+	useEffect(() => {
+		const getMatrix = () => {
+			const matrix = wordsearch(pokemonNames, 15, 15);
+			if (matrix.unplaced.length) return getMatrix();
+			return matrix;
+		};
+
+		const matrix = getMatrix();
+		const { grid: generatedGrid } = matrix;
+		const gridWithCoords = generatedGrid.map((row, y) => {
+			return row.map((cell, x) => ({ char: cell, x, y }))
+		});
+		setGrid(gridWithCoords);
+	}, [])
 
 	useEffect(() => {
 		const { start, end } = selectedPoints;
@@ -617,14 +726,16 @@ const Started = () => {
 
 	return (
 		<div className='w-full h-full'>
-			<div className='w-full md:w-9/12 flex mx-auto'>
-				<div className='w-auto h-auto mx-auto mt-4 grid grid-cols-15 border border-black'>
+			<div className='w-full md:w-6/12 flex mx-auto pt-8'>
+				<div className='w-auto h-auto mx-auto grid grid-cols-15 border border-black'>
 					{flattenedGrid.map((cell, idx) => {
 						const key = `board-cell--${idx}`;
+						const cellId = `x${cell.x}y${cell.y}`
 						return (
 							<div
 								key={key}
-								className='w-[20px] md:w-[32px] h-[20px] md:h-[32px] flex justify-center items-center text-sm md:text-xl font-bold border hover:border-red-500 cursor-pointer hover:bg-red-500 hover:text-white'
+								id={cellId}
+								className={getCellClasses(cellId)}
 								onMouseDown={(e) => handleCellSelection(e, cell, 'start')}
 								onMouseUp={(e) => handleCellSelection(e, cell, 'end')}
 							>
@@ -634,10 +745,10 @@ const Started = () => {
 					})}
 				</div>
 				<div>
-					{pokemonNamesMock.map((word, idx) => {
+					{pokemonNames.map((word, idx) => {
 						const key = `word--${idx}`;
 						return (
-							<div key={key}>{word.toUpperCase()}</div>
+							<div key={key} className={getWordClasses(word)}>{word.toUpperCase()}</div>
 						)
 					})}
 				</div>

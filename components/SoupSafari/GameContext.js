@@ -20,7 +20,7 @@ const ActionTypes = {
 }
 
 const initialState = {
-	gameStatus: gameStatusTypes.IN_PROGRESS,
+	gameStatus: gameStatusTypes.NON_STARTED,
 	selectedOptions: [],
 	pokemonList: []
 }

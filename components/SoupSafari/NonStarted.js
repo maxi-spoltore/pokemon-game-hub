@@ -5,10 +5,11 @@ import { oneOfTypeSelected, getPokemonList, validateList, sortAndSlice } from '.
 import usePokemonData from '../../hooks/usePokemonData';
 import ActionButton from '../actionButton';
 import CheckboxList from './CheckboxList';
+import DifficultySelector from './DifficultySelector';
 import Toaster from '../Toaster';
 
 const NonStarted = ({ name, description }) => {
-	const { selectedOptions } = useGameState();
+	const { selectedOptions, pokemonListLength } = useGameState();
 	const dispatch = useGameDispatch();
 	const { data: typeData, loading: typeLoading } = usePokemonData('type');
 	const { data: generationData, loading: generationLoading } = usePokemonData('generation');
@@ -39,7 +40,7 @@ const NonStarted = ({ name, description }) => {
 		});
 		const pokemonList = await getPokemonList(selectedOptions);
 		if (!validateList(pokemonList)) return toast("Not enough pokemon. Please select more types and/or more generations:");
-		const sortedPokemonList = sortAndSlice(pokemonList, 10);
+		const sortedPokemonList = sortAndSlice(pokemonList, pokemonListLength);
 		dispatch({ type: ActionTypes.SET_POKEMON_LIST, payload: sortedPokemonList });
 		dispatch({ type: ActionTypes.UPDATE_GAME_STATUS, payload: gameStatusTypes.STARTING });
 	};
@@ -62,6 +63,7 @@ const NonStarted = ({ name, description }) => {
 				<h2 className='text-3xl font-bold my-8'>{name}</h2>
 				<p className='text-md mt-4'>{description}</p>
 				{renderTypes()}
+				<DifficultySelector />
 				<div className='mt-auto flex flex-col items-center'>
 					<ActionButton text='Start' size='large' onClick={start} />
 				</div>

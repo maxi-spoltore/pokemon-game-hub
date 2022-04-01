@@ -13,6 +13,8 @@ module.exports = {
         'letter-error': 'shake 1s cubic-bezier(.36,.07,.19,.97) infinite',
         'fade': 'fade 1s cubic-bezier(.36,.07,.19,.97) infinite',
         'bounce': 'bounce 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
+        'slide-in': 'slideIn 0.5s both',
+        'btn-slide-in': 'slideIn 0.5s 1.5s both',
       },
       keyframes: {
         textBlink: {
@@ -47,10 +49,18 @@ module.exports = {
         bounce: {
           '0%': { transform: 'translateY(40px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' }
+        },
+        slideIn: {
+          '0%': { transform: 'translateY(200px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
         }
       },
       gridTemplateColumns: {
         '15': 'repeat(15, minmax(0, 1fr))'
+      },
+      backgroundImage: {
+        'safari': "url('/images/safari_zone.png')",
+        'safari-texture': "url('/images/safari_texture.png')"
       }
     },
   },

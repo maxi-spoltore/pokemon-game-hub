@@ -139,7 +139,7 @@ const Started = () => {
 					{currentPokemon && <GuessBoard pokemonImgs={currentPokemon.sprites} show={showImg} />}
 					{renderGuess()}
 					{!guessingStarted && !guess && !matchesIds.size && <GuessPlaceholder />}
-					<Toaster renderType={'pokeball'}/>
+					<Toaster renderType={'pokeball'} />
 					{backspaceSound && (
 						<Sound
 							url='/sounds/keypress.wav'

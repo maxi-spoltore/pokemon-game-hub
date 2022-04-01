@@ -6,27 +6,42 @@ const GameDispatchContext = createContext(null);
 const gameStatusTypes = {
 	NON_STARTED: 'non_started',
 	STARTING: 'starting',
-	IN_PROGRESS: 'in_progress',
-	FINISHING: 'finishing',
-	OVER: 'over'
+	IN_PROGRESS: 'in_progress'
+}
+
+const gameDifficulties = {
+	NORMAL: 'normal',
+	HARD: 'hard',
 }
 
 const ActionTypes = {
+	SET_GAME_DIFFICULTY: 'set_game_difficulty',
 	UPDATE_GAME_STATUS: 'update_game_status',
 	ADD_GAME_OPTION: 'add_game_option',
 	REMOVE_GAME_OPTION: 'remove_game_option',
 	SET_POKEMON_LIST: 'set_pokemon_list',
+	ADD_MATCH: 'add_match',
+	GAME_WON: 'game_won',
 	RESTART_GAME: 'restart_game'
 }
 
 const initialState = {
+	pokemonListLength: 10,
+	difficulty: gameDifficulties.NORMAL,
 	gameStatus: gameStatusTypes.NON_STARTED,
 	selectedOptions: [],
-	pokemonList: []
+	pokemonList: [],
+	matches: new Set(),
+	gameWon: false
 }
 
 const GameContextReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case ActionTypes.SET_GAME_DIFFICULTY:
+			return {
+				...state,
+				difficulty: action.payload
+			}
 		case ActionTypes.UPDATE_GAME_STATUS:
 			return {
 				...state,
@@ -48,11 +63,18 @@ const GameContextReducer = (state = initialState, action) => {
 				...state,
 				pokemonList: action.payload
 			}
-		case ActionTypes.RESTART_GAME:
+		case ActionTypes.ADD_MATCH:
 			return {
 				...state,
-				gameStatus: gameStatusTypes.NON_STARTED
+				matches: new Set(state.matches.add(action.payload))
 			}
+		case ActionTypes.GAME_WON:
+			return {
+				...state,
+				gameWon: true
+			}
+		case ActionTypes.RESTART_GAME:
+			return initialState;
 		default:
 			return state;
 	}

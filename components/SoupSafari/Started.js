@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import classNames from 'classnames';
-import { useGameState } from './GameContext';
+import toast from 'react-hot-toast';
+import { useGameState, useGameDispatch, ActionTypes } from './GameContext';
+import Toaster from '../Toaster';
+import PokemonList from './PokemonList';
+import GameBoard from './GameBoard';
+import Spinner from '../Spinner';
 
 const wordsearch = require('wordsearch');
 
@@ -545,26 +549,25 @@ const initialSelectedPoints = {
 };
 
 const Started = () => {
+	const { pokemonList, pokemonListLength, matches } = useGameState();
+	const dispatch = useGameDispatch();
+
 	const [grid, setGrid] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const [selectedPoints, setSelectedPoints] = useState(initialSelectedPoints);
-	const [selectionStarted, setSelectionStarted] = useState(false);
 	const [selectionEnded, setSelectionEnded] = useState(false);
 	const [matchingCells, setMatchingCells] = useState(new Set());
-	const [foundWords, setFoundWords] = useState(new Set());
-	const { pokemonList } = useGameState();
-	const pokemonNames = pokemonList.map(pokemon => pokemon.name);
-
+	
+	const pokemonNames = pokemonList.map(pokemon => pokemon.name) || [];
 	const flattenedGrid = grid.reduce((acc, val) => acc.concat(val), []) || [];
 
 	const handleCellSelection = (e, cell, type) => {
 		e.preventDefault();
 		setSelectedPoints(prev => ({ ...prev, [type]: cell }));
-		if (type === 'start') {
-			setSelectionStarted(true);
-			setSelectionEnded(false);
-		} else {
-			setSelectionStarted(false);
+		if (type === 'end') {
 			setSelectionEnded(true);
+		} else {
+			setSelectionEnded(false);
 		}
 	};
 
@@ -630,16 +633,20 @@ const Started = () => {
 		};
 
 		if (pokemonNames.includes(word)) {
-			setFoundWords(prev => new Set(prev.add(word)));
+			if (!matches.has(word)) {
+				toast('Gotcha!', {
+					duration: 1000
+				})
+			}
+			dispatch({ type: ActionTypes.ADD_MATCH, payload: word });
 			selectedCells.forEach(cell => setMatchingCells(prev => new Set(prev.add(cell))))
 		}
-
 	};
 
 	const handleWordMatch = selectedPoints => {
 		const { start, end } = selectedPoints;
-		const { char: startChar, x: startX, y: startY } = start;
-		const { char: endChar, x: endX, y: endY } = end;
+		const { x: startX, y: startY } = start;
+		const { x: endX, y: endY } = end;
 		let dir;
 		switch (true) {
 			case startX < endX && startY === endY:
@@ -672,36 +679,6 @@ const Started = () => {
 		findWordMatch(selectedPoints, dir);
 	};
 
-	const getCellClasses = cellId => {
-		return classNames([
-			'w-[20px]',
-			'md:w-[32px]',
-			'h-[20px]',
-			'md:h-[32px]',
-			'flex',
-			'justify-center',
-			'items-center',
-			'text-sm',
-			'md:text-xl',
-			'font-bold',
-			'border',
-			'hover:border-red-500',
-			'cursor-pointer',
-			...(matchingCells.has(cellId) ? ['bg-red-500', 'text-slate-100'] : []),
-			'hover:bg-red-500',
-			'hover:text-white'
-		])
-	};
-
-	const getWordClasses = word => {
-		const matchingWord = foundWords.has(word);
-		return classNames([
-			'text-xl',
-			'font-bold',
-			...(matchingWord ? ['line-through', 'decoration-2', 'text-black'] : ['text-red-500'])
-		])
-	}
-
 	useEffect(() => {
 		const getMatrix = () => {
 			const matrix = wordsearch(pokemonNames, 15, 15);
@@ -720,39 +697,32 @@ const Started = () => {
 	useEffect(() => {
 		const { start, end } = selectedPoints;
 		if (isEmpty(start) || isEmpty(end)) return;
-		// console.log({ selectedPoints });
 		if (selectionEnded) handleWordMatch(selectedPoints);
-	}, [selectedPoints, selectionEnded])
+	}, [selectedPoints, selectionEnded]);
+
+	useEffect(() => {
+		if (matches && matches.size === pokemonListLength) {
+			dispatch({ type: ActionTypes.GAME_WON })
+		}
+	}, [matches])
 
 	return (
-		<div className='w-full h-full'>
-			<div className='w-full md:w-6/12 flex mx-auto pt-8'>
-				<div className='w-auto h-auto mx-auto grid grid-cols-15 border border-black'>
-					{flattenedGrid.map((cell, idx) => {
-						const key = `board-cell--${idx}`;
-						const cellId = `x${cell.x}y${cell.y}`
-						return (
-							<div
-								key={key}
-								id={cellId}
-								className={getCellClasses(cellId)}
-								onMouseDown={(e) => handleCellSelection(e, cell, 'start')}
-								onMouseUp={(e) => handleCellSelection(e, cell, 'end')}
-							>
-								{cell.char.toUpperCase()}
-							</div>
-						)
-					})}
-				</div>
-				<div>
-					{pokemonNames.map((word, idx) => {
-						const key = `word--${idx}`;
-						return (
-							<div key={key} className={getWordClasses(word)}>{word.toUpperCase()}</div>
-						)
-					})}
-				</div>
+		<div className='w-full fill-screen-vertical bg-safari bg-cover bg-center'>
+			<div className={`w-full md:w-6/12 flex ${isLoading ? 'justify-center items-center min-h-[500px]' : ''} items-center mx-auto pt-8`}>
+				{isLoading
+					? <Spinner />
+					: (
+						<>
+							<GameBoard
+								grid={flattenedGrid}
+								matchingCells={matchingCells}
+								handleCellSelection={handleCellSelection}
+							/>
+						</>
+					)}
+				<PokemonList isLoading={isLoading} handleLoading={setIsLoading} />
 			</div>
+			<Toaster renderType={'pokeball'} />
 		</div>
 	)
 }

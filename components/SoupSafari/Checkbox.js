@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { unslugify } from '../utils/utils';
+import { unslugify } from '../../utils';
 
 const themes = {
 	type: {

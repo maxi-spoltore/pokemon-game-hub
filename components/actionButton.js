@@ -34,6 +34,7 @@ const ActionButton = ({
 	const btnClasses = classNames(
 		...btnSize(),
 		color,
+		'font-pokemon-gb',
 		'text-white',
 		'font-medium',
 		'uppercase',

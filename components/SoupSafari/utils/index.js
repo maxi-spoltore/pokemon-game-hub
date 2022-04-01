@@ -14,14 +14,14 @@ const shuffleArr = arr => {
   return arr;
 }
 
-const getData = async selectedOptions => {
+const fetcher = async item => {
+	const { data } = await axios.get(item.url);
+	return data;
+};
+
+const getOptionsData = async selectedOptions => {
 	if (!selectedOptions || !selectedOptions.length) return;
 	try {
-		const fetcher = async item => {
-			const { data } = await axios.get(item.url);
-			return data;
-		};
-
 		let [typeOptions] = partition(selectedOptions, ['type', 'type']);
 		let [generationOptions] = partition(selectedOptions, ['type', 'generation']);
 
@@ -38,7 +38,7 @@ const getData = async selectedOptions => {
 
 export const getPokemonList = async selectedOptions => {
 	try {
-		const [typeData, generationData] = await getData(selectedOptions);
+		const [typeData, generationData] = await getOptionsData(selectedOptions);
 
 		if (isEmpty(typeData) || isEmpty(generationData)) return null;
 
@@ -86,4 +86,31 @@ export const validateList = list => (!list || !list.length) || list.length >= 10
 export const sortAndSlice = (list = [], length) => {
 	const sortedList = shuffleArr(list);
 	return sortedList.length > length ? [...sortedList.slice(0, length)] : sortedList;
+};
+
+const getPokemonListData = async pokemonList => {
+	if (!pokemonList || !pokemonList.length) return;
+	try {
+		const pokemonData = await Promise.all(pokemonList.map(fetcher))
+		
+		return pokemonData;
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+}
+
+export const getPokemonListImages = async pokemonList => {
+	try {
+		const pokemonData = await getPokemonListData(pokemonList);
+		if (!pokemonData || !pokemonData.length) return [];
+
+		return pokemonData.map(pokemon => {
+			const { name, sprites } = pokemon || {};
+			return { name, sprites };
+		})
+	} catch (err) {
+		console.log(err);
+		return [];
+	}
 };

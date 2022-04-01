@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGameDispatch, ActionTypes } from './GameContext';
-import Checkbox from '../Checkbox';
+import Checkbox from './Checkbox';
 
 const findOption = (options, field, value) => {
 	const condition = item => item[field] === value;

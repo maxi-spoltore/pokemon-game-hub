@@ -3,29 +3,22 @@ const GAMES = [
 		name: 'Pokédex',
 		id: 'game-1',
 		description: 'Name as many pokémon as you can until time runs out!. (1st generation only for now...)',
-		imgUrl: '/images/game-img.png',
+		imgUrl: '/images/pokedex.jpg',
 		rootComponent: 'Pokedex'
 	},
 	{
 		name: 'Who is this pokémon?',
 		id: 'game-2',
 		description: "Guess the pokémon that is displayed on the screen. Try the hard difficulty, in which you'll only see the silhouette!. (1st generation only for now...)",
-		imgUrl: '/images/game-img.png',
+		imgUrl: '/images/guess_pokemon_background.jpg',
 		rootComponent: 'GuessPokemon'
 	},
 	{
 		name: 'Soup Safari',
 		id: 'game-3',
 		description: 'Find all pokémon hidden inside this awesome letter soup Safari. You can select all the pokemon types and generations you want!',
-		imgUrl: '/images/game-img.png',
+		imgUrl: '/images/safari_zone.png',
 		rootComponent: 'SoupSafari'
-	},
-	{
-		name: 'Game 4',
-		id: 'game-4',
-		description: 'Game 4 Description',
-		imgUrl: '/images/game-img.png',
-		rootComponent: 'GameOne'
 	}
 ];
 

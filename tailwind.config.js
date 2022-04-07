@@ -14,6 +14,7 @@ module.exports = {
         'fade': 'fade 1s cubic-bezier(.36,.07,.19,.97) infinite',
         'bounce': 'bounce 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
         'slide-in': 'slideIn 0.5s both',
+        'card-slide-in': 'slideIn 0.5s 0.2s both',
         'btn-slide-in': 'slideIn 0.5s 1.5s both',
       },
       keyframes: {
@@ -60,7 +61,8 @@ module.exports = {
       },
       backgroundImage: {
         'safari': "url('/images/safari_zone.png')",
-        'safari-texture': "url('/images/safari_texture.png')"
+        'safari-texture': "url('/images/safari_texture.png')",
+        'opening': "url('/images/pokemon-opening.webp')"
       }
     },
   },

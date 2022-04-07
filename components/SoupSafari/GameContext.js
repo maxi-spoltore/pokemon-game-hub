@@ -74,7 +74,11 @@ const GameContextReducer = (state = initialState, action) => {
 				gameWon: true
 			}
 		case ActionTypes.RESTART_GAME:
-			return initialState;
+			return {
+				...state,
+				...initialState,
+				matches: new Set(state.matches.clear())
+			};
 		default:
 			return state;
 	}

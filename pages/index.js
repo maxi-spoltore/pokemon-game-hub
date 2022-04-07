@@ -13,11 +13,13 @@ export default function Home({ gameData }) {
       </Head>
 
       <Layout>
-        <div className='w-9/12 mt-8 mx-auto'>
-          <h1 className='text-4xl font-bold text-center'>Pokémon Game HUB</h1>
-          <p className='text-lg font-medium text-center mt-2'>A collection of pokémon mini games to play among friends!</p>
+        <div className='w-full fill-screen-vertical bg-opening bg-contain'>
+          <div className='w-9/12 mx-auto'>
+            <h1 className='main-title pt-8 text-center'>Pokémon Game HUB</h1>
+            <p className='text-lg font-medium text-center mt-2'>A collection of pokémon mini games to play among friends!</p>
+          </div>
+          <GameList gameData={gameData} />
         </div>
-        <GameList gameData={gameData} />
       </Layout>
     </div>
   )

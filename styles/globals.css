@@ -76,9 +76,8 @@ a {
 	font-family: 'Pokemon_Solid';
   color: yellow;
   text-shadow: -2px 0 red, 0 2px red, 2px 0 red, 0 -2px red;
-  font-size: 72px;
   letter-spacing: 6px;
-  margin-left: 10px
+  margin-left: 10px;
 }
 
 .font-pokemon-solid {
@@ -98,7 +97,7 @@ a {
 .countdown-wrapper {
   background-color: #2e2e2e;
   position: fixed;
-  bottom: 5rem;
+  bottom: 2rem
 }
 
 .countdown-timer {

@@ -28,14 +28,16 @@ const WithCountdown = ({ children, ...props }) => {
 	}
 
 	return (
-		<div className='flex justify-center w-full'>
+		<div className='flex flex-col w-full'>
 			{children({ setCountdown })}
 			{countdown && (
-				<div className='countdown-wrapper w-36 flex justify-center items-center p-2 rounded-md'>
-					<Countdown
-						date={Date.now() + props.countdownTime}
-						renderer={renderTimer}
-					/>
+				<div className='w-full flex items-center justify-center'>
+					<div className='countdown-wrapper w-36 flex justify-center items-center p-2 rounded-md'>
+						<Countdown
+							date={Date.now() + props.countdownTime}
+							renderer={renderTimer}
+						/>
+					</div>
 				</div>
 			)}
 		</div>

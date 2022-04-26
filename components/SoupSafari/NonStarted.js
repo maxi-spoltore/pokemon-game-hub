@@ -4,6 +4,7 @@ import { useGameState, useGameDispatch, ActionTypes, gameStatusTypes } from './G
 import { oneOfTypeSelected, getPokemonList, validateList, sortAndSlice } from './utils';
 import usePokemonData from '../../hooks/usePokemonData';
 import ActionButton from '../actionButton';
+import GameHeader from '../GameHeader';
 import CheckboxList from './CheckboxList';
 import DifficultySelector from './DifficultySelector';
 import Toaster from '../Toaster';
@@ -60,8 +61,7 @@ const NonStarted = ({ name, description }) => {
 	return (
 		<>
 			<div className='h-[70vh] flex flex-col items-center'>
-				<h2 className='text-3xl font-bold my-8'>{name}</h2>
-				<p className='text-md mt-4'>{description}</p>
+				<GameHeader name={name} description={description} />
 				{renderTypes()}
 				<DifficultySelector />
 				<div className='mt-auto flex flex-col items-center'>

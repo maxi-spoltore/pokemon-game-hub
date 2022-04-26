@@ -76,7 +76,7 @@ export default function GameList({ gameData }) {
 		});
 	
 	return (
-		<div className='w-8/12 mx-auto mt-10 p-4 flex justify-center gap-8'>
+		<div className='w-full md:w-8/12 mx-auto mt-0 md:mt-10 lg:mt-14 2xl:mt-24 p-4 flex justify-center items-center flex-wrap flex-col md:flex-row gap-8'>
 			{renderGameList()}
 		</div>
 	)

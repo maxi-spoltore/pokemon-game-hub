@@ -11,7 +11,7 @@ const Toaster = ({ renderType }) => {
 	};
 
 	const toastBarStyle = {
-		boxShadow: 'none'
+		boxShadow: renderType === 'pokeball' ? 'none' : '2px 2px 20px rgba(0,0,0,.2)'
 	};
 
 	return (
@@ -34,7 +34,7 @@ const Toaster = ({ renderType }) => {
 										/>
 									</>
 									) : (
-										<div className='text-xl text-center font-bold text-red-700'>{message}</div>
+										<div className='text-xl text-center font-bold text-red-700 rounded-lg'>{message}</div>
 									)
 								}
 							</>

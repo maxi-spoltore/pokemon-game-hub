@@ -1,5 +1,6 @@
 import React from 'react'
 import ActionButton from '../actionButton';
+import GameHeader from '../GameHeader';
 import { useGameDispatch, ActionTypes, gameStatusTypes } from './GameContext';
 
 const NonStarted = ({ name, description }) => {
@@ -10,10 +11,9 @@ const NonStarted = ({ name, description }) => {
 	}
 
 	return (
-		<div className='h-[70vh] flex flex-col items-center'>
-			<h2 className='text-3xl font-bold my-8'>{name}</h2>
-			<p className='text-md mt-4'>{description}</p>
-			<div className='mt-auto'>
+		<div className='h-screen-vertical sm:h-[70vh] flex flex-col items-center'>
+			<GameHeader name={name} description={description} />
+			<div className='mt-auto mb-4 sm:mb-0'>
 				<ActionButton text='Start' size='large' onClick={start} />
 			</div>
 		</div>

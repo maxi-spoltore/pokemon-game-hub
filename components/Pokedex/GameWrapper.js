@@ -11,7 +11,7 @@ const GameWrapper = ({ name, description }) => {
 	}, []);
 
 	return (
-		<div className='w-full flex justify-center'>
+		<div className='w-full flex justify-center overflow-hidden'>
 			<WithCountdown countdownTime={120000000} closeToEndThreshold={20} onEnd={endTimeCallback}>
 				{({ setCountdown }) => (
 					<GameContent

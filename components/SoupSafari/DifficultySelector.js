@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import ActionButton from '../actionButton';
 import { useGameDispatch, ActionTypes } from './GameContext';
+import BaseSelector from '../DifficultySelector';
 
 const difficulties = ['normal', 'hard'];
 
@@ -14,12 +14,12 @@ const DifficultySelector = () => {
 	};
 
 	return (
-		<div className='flex items-center bg-red-300 p-3 mb-8 rounded-xl'>
-			<h5 className='mr-2'>Select difficulty:</h5>
-			<ActionButton active={selectedDifficulty === 'normal'} text='normal' color='lightRed' size='small' onClick={() => selectDifficulty('normal')} />
-			<ActionButton active={selectedDifficulty === 'hard'} text='hard' color='lightRed' size='small' onClick={() => selectDifficulty('hard')} />
-		</div>
-	)
+		<BaseSelector
+			difficulties={difficulties}
+			selectedDifficulty={selectedDifficulty}
+			handleSelect={selectDifficulty}
+		/>
+	);
 }
 
 export default DifficultySelector

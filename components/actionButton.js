@@ -7,7 +7,8 @@ const ActionButton = ({
 	size = 'medium',
 	active,
 	onClick = () => {},
-	disabled
+	disabled,
+	styles = []
 }) => {
 	const btnSize = () => {
 		switch (size) {
@@ -22,7 +23,7 @@ const ActionButton = ({
 
 	const colorTheme = {
 		red: {
-			base: ['bg-red-500', 'hover:bg-red-500'],
+			base: ['bg-red-500', 'hover:bg-red-700'],
 			active: ['bg-red-600', 'hover:bg-red-500']
 		},
 		lightRed: {
@@ -44,7 +45,8 @@ const ActionButton = ({
 		'transition-all',
 		...(!active ? colorTheme[color].base : []),
 		...(active ? colorTheme[color].active : []),
-		...(disabled ? ['cursor-not-allowed'] : [])
+		...(disabled ? ['cursor-not-allowed'] : []),
+		...(styles ? styles : [])
 	);
 
 	return (

@@ -24,7 +24,8 @@ module.exports = {
         'btn-slide-in': 'slideIn 0.5s 1.5s both',
         'typing-title': 'typing .5s 0.5s forwards',
         'tracking': 'tracking 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) 1.5s both',
-        'slide-in-bottom-blur': 'slideInBottomBlur 0.6s cubic-bezier(0.230, 1.000, 0.320, 1.000) 1s both'
+        'slide-in-bottom-blur': 'slideInBottomBlur 0.6s cubic-bezier(0.230, 1.000, 0.320, 1.000) 1s both',
+        'slide-in-title': 'slideInBottomBlur 0.6s cubic-bezier(0.230, 1.000, 0.320, 1.000) .2s both'
       },
       keyframes: {
         textBlink: {

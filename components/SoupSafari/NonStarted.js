@@ -39,17 +39,22 @@ const NonStarted = ({ name, description }) => {
 		if (disabled) return toast("You must choose at least one type and one generation.", {
 			duration: 1500
 		});
+
 		const pokemonList = await getPokemonList(selectedOptions);
-		if (!validateList(pokemonList)) return toast("Not enough pokemon. Please select more types and/or more generations:");
+
+		if (!validateList(pokemonList, pokemonListLength)) return toast("Not enough pokemon. Please select more types and/or more generations:");
+
 		const sortedPokemonList = sortAndSlice(pokemonList, pokemonListLength);
+
 		dispatch({ type: ActionTypes.SET_POKEMON_LIST, payload: sortedPokemonList });
 		dispatch({ type: ActionTypes.UPDATE_GAME_STATUS, payload: gameStatusTypes.STARTING });
 	};
 
-	const renderTypes = () => {
+	const renderOptions = () => {
 		return !isLoading && (
 			<CheckboxList
 				options={options}
+				isLoading={isLoading}
 				nameField='name'
 				componentAttributes={{
 					labelFormat: 'unslugify'
@@ -62,7 +67,7 @@ const NonStarted = ({ name, description }) => {
 		<>
 			<div className='h-[70vh] flex flex-col items-center'>
 				<GameHeader name={name} description={description} />
-				{renderTypes()}
+				{renderOptions()}
 				<DifficultySelector />
 				<div className='mt-auto flex flex-col items-center'>
 					<ActionButton text='Start' size='large' onClick={start} />

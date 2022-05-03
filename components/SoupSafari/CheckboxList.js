@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameDispatch, ActionTypes } from './GameContext';
 import Checkbox from './Checkbox';
+import Spinner from '../Spinner';
 
 const findOption = (options, field, value) => {
 	const condition = item => item[field] === value;
@@ -12,7 +13,7 @@ const findOption = (options, field, value) => {
 	return option;
 };
 
-const CheckboxList = ({ options = [], nameField, componentAttributes }) => {
+const CheckboxList = ({ options = [], isLoading, nameField, componentAttributes }) => {
 	const dispatch = useGameDispatch();
 
 	const handleSelectBox = (e, label) => {
@@ -44,7 +45,11 @@ const CheckboxList = ({ options = [], nameField, componentAttributes }) => {
 						<div key={key} className='w-full flex flex-col items-center bg-gray-100 rounded-lg m-4 p-2'>
 							<h5 className=''>{label}</h5>
 							<div className='flex flex-wrap justify-center mt-4'>
-								{renderCheckboxes(optionGroup)}
+								{isLoading ? (
+									<Spinner />
+								) : 
+									renderCheckboxes(optionGroup)
+								}
 							</div>
 						</div>
 					);

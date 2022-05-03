@@ -1,7 +1,7 @@
-export const generateRandomId = (nonValidIds) => {
-	if (nonValidIds.size === 151) return false;
+export const generateRandomId = (nonValidIds, size = 151) => {
+	if (nonValidIds.size === size) return false;
 
-	const id = Math.floor(Math.random() * 151) + 1;
+	const id = Math.floor(Math.random() * size) + 1;
 
 	if (nonValidIds.has(id)) return generateRandomId(nonValidIds);
 	

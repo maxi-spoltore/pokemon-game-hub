@@ -15,7 +15,7 @@ const DifficultySelector = ({ difficulties = [], selectedDifficulty, handleSelec
 					color='lightRed'
 					size='small'
 					onClick={() => handleSelect(difficulty)}
-					styles={['w-min px-2']}
+					styles={['w-min', 'px-2']}
 				/>
 			)
 		});

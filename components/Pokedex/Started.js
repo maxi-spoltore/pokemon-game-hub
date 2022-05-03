@@ -5,6 +5,7 @@ import usePokemonData from '../../hooks/usePokemonData';
 import LetterCube from '../LetterCube';
 import Match from './Match';
 import Toaster from '../Toaster';
+import GuessPlaceholder from '../GuessPlaceholder';
 
 const keyCodeMap = {
 	backspace: 8,
@@ -93,12 +94,6 @@ const Started = () => {
 		);
 	};
 
-	const GuessPlaceholder = () => (
-		<p className='text-2xl font-bold animate-text-blink'>
-			Start typing!
-		</p>
-	);
-
 	useEffect(() => {
 		window.addEventListener('keydown', handleGuess);
 		return () => window.removeEventListener('keydown', handleGuess);
@@ -116,7 +111,7 @@ const Started = () => {
 				<div className='w-9/12 flex flex-col items-center w-full h-full mx-auto'>
 					{renderMatches()}
 					{renderGuess()}
-					{!guessingStarted && !guess && !matches.size && <GuessPlaceholder />}
+					{!guessingStarted && !guess && !matches.size && <GuessPlaceholder text='Start typing!' />}
 					<Toaster renderType={toasterType}/>
 					{backspaceSound && (
 						<Sound

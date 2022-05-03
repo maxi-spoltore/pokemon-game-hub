@@ -7,12 +7,13 @@ import LetterCube from '../LetterCube';
 import Toaster from '../Toaster';
 import { generateRandomId } from '../../utils/utils';
 import GuessBoard from './GuessBoard';
+import GuessPlaceholder from '../GuessPlaceholder';
 
 const keyCodeMap = {
 	backspace: 8,
+	tab: 9,
 	enter: 13,
-	space: 32,
-	tab: 9
+	space: 32
 }
 
 const Started = () => {
@@ -97,12 +98,6 @@ const Started = () => {
 		)
 	};
 
-	const GuessPlaceholder = () => (
-		<p className='text-2xl font-bold animate-text-blink'>
-			Start typing!
-		</p>
-	);
-
 	useEffect(() => {
 		window.addEventListener('keydown', handleGuess);
 		return () => window.removeEventListener('keydown', handleGuess);
@@ -138,7 +133,7 @@ const Started = () => {
 					{renderCount()}
 					{currentPokemon && <GuessBoard pokemonImgs={currentPokemon.sprites} show={showImg} />}
 					{renderGuess()}
-					{!guessingStarted && !guess && !matchesIds.size && <GuessPlaceholder />}
+					{!guessingStarted && !guess && !matchesIds.size && <GuessPlaceholder text='Start typing!'/>}
 					<Toaster renderType={'pokeball'} />
 					{backspaceSound && (
 						<Sound

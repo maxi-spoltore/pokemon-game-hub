@@ -81,7 +81,7 @@ export const oneOfTypeSelected = (options, types) => {
 	return isValid;
 };
 
-export const validateList = list => (!list || !list.length) || list.length >= 10;
+export const validateList = (list, validLength = 0) => list?.length >= validLength;
 
 export const sortAndSlice = (list = [], length) => {
 	const sortedList = shuffleArr(list);

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGameState, useGameDispatch, ActionTypes } from './GameContext'
-import ActionButton from '../actionButton'
+import ActionButton from '../ActionButton'
 import MatchList from './MatchList'
 
 const Over = () => {

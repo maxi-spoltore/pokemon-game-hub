@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useGameState, useGameDispatch, ActionTypes, gameStatusTypes } from './GameContext';
 import { oneOfTypeSelected, getPokemonList, validateList, sortAndSlice } from './utils';
 import usePokemonData from '../../hooks/usePokemonData';
-import ActionButton from '../actionButton';
+import ActionButton from '../ActionButton';
 import GameHeader from '../GameHeader';
 import CheckboxList from './CheckboxList';
 import DifficultySelector from './DifficultySelector';

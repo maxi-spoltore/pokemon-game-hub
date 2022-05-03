@@ -1,5 +1,5 @@
 import React from 'react'
-import ActionButton from '../actionButton';
+import ActionButton from '../ActionButton';
 import GameHeader from '../GameHeader';
 import { useGameDispatch, ActionTypes, gameStatusTypes } from './GameContext';
 import DifficultySelector from './DifficultySelector';

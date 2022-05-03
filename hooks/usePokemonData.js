@@ -9,17 +9,22 @@ const ENDPOINTS = {
   generation: '/generation'
 }
 
-const usePokemonData = endpointName => {
-  if (!endpointName) return null;
+const usePokemonData = (endpointName, shouldNormalize = true) => {
+  try {
+    if (!endpointName) throw new Error('No endpoint provided to usePokemonData hook.');
+  
+    const url = `${BASE_URL}${ENDPOINTS[endpointName] || endpointName}`
+    const { data, error } = useSWR(url, fetcher);
+  
+    return {
+      data: shouldNormalize ? normalizeData(data, endpointName) : data,
+      isLoading: !error && !data,
+      isError: error
+    }
 
-  const url = `${BASE_URL}${ENDPOINTS[endpointName]}`
-  const { data, error } = useSWR(url, fetcher);
-  const normalizedData = normalizeData(data, endpointName);
-
-  return {
-    data: normalizedData,
-    isLoading: !error && !data,
-    isError: error
+  } catch (err) {
+    console.log(err);
+    return {}
   }
 }
 

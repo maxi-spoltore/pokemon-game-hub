@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useGameState, useGameDispatch, ActionTypes } from './GameContext';
-import ActionButton from '../actionButton';
+import ActionButton from '../ActionButton';
 
 const GameBoard = ({ grid, matchingCells, handleCellSelection }) => {
 	const { gameWon } = useGameState();

@@ -8,7 +8,7 @@ import Pokeball from '../Pokeball';
 const Match = ({ incomingData, readonly }) => {
 	const dispatch = useGameDispatch();
 	const { data } = incomingData || {};
-	const { data: mappedData, error } = data && data.url ? useSWR(data.url, fetcher) : incomingData;
+	const { data: mappedData, error } = data?.url ? useSWR(data.url, fetcher) : incomingData;
 	const isLoading = !error && !mappedData;
 	const { sprites = {}, name } = mappedData || {};
 

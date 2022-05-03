@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
-import useSWR from 'swr';
 import toast from 'react-hot-toast';
 import Sound from 'react-sound';
-import { fetcher } from '../../data/api';
+import usePokemonData from '../../hooks/usePokemonData';
 import LetterCube from '../LetterCube';
 import Match from './Match';
 import Toaster from '../Toaster';
 
 const keyCodeMap = {
 	backspace: 8,
+	tab: 9,
 	enter: 13,
 	space: 32
 }
@@ -20,13 +20,15 @@ const Started = () => {
 	const [guessingStarted, setGuessingStarted] = useState(false);
 	const [backspaceSound, setBackspaceSound] = useState(false);
 	const [toasterType, setToasterType] = useState('');
-	const { data, error } = useSWR('https://pokeapi.co/api/v2/pokemon?limit=151', fetcher);
+	const { data } = usePokemonData('/pokemon?limit=151', false);
 	const matchesRef = useRef(null);
 
 	const submitGuess = async () => {
 		if (!guess) return;
-		const { results: pokemonList } = data || [];
+
+		const { results: pokemonList } = data || {};
 		const validMatch = pokemonList.find(pokemon => pokemon.name === guess);
+
 		if (validMatch) {
 			if(!matches.has(validMatch)) {
 				setToasterType('pokeball');

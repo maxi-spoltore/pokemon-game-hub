@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import Layout from '../components/layout'
-import GameList from '../components/gamelist'
+import Layout from '../components/Layout'
+import GameList from '../components/Gamelist'
 import { getGameList } from './api/gamedata'
 
 export default function Home({ gameData }) {

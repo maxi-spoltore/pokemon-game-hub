@@ -1,5 +1,5 @@
 import React from 'react'
-import ActionButton from './actionButton';
+import ActionButton from './ActionButton';
 
 const DifficultySelector = ({ difficulties = [], selectedDifficulty, handleSelect }) => {
 	if (!difficulties || !difficulties.length) return null;

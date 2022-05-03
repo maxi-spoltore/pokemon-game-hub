@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import GameLayout from "../../components/gameLayout";
+import GameLayout from "../../components/GameLayout";
 import { findGame, getGameList } from '../api/gamedata';
 
 export async function getStaticProps(context) {

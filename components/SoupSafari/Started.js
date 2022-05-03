@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import toast from 'react-hot-toast';
+import Sound from 'react-sound';
 import { useGameState, useGameDispatch, ActionTypes } from './GameContext';
 import Toaster from '../Toaster';
 import PokemonList from './PokemonList';
@@ -34,12 +35,14 @@ const Started = () => {
 	const [selectedPoints, setSelectedPoints] = useState(initialSelectedPoints);
 	const [selectionEnded, setSelectionEnded] = useState(false);
 	const [matchingCells, setMatchingCells] = useState(new Set());
+	const [matchSound, setMatchSound] = useState(false);
 	
 	const pokemonNames = pokemonList.map(pokemon => pokemon.name) || [];
 	const flattenedGrid = grid.reduce((acc, val) => acc.concat(val), []) || [];
 
 	const handleCellSelection = (e, cell, type) => {
 		e.preventDefault();
+		setMatchSound(false);
 		setSelectedPoints(prev => ({ ...prev, [type]: cell }));
 		if (type === 'end') {
 			setSelectionEnded(true);
@@ -114,6 +117,7 @@ const Started = () => {
 				toast('Gotcha!', {
 					duration: 1000
 				})
+				setMatchSound(true);
 			}
 			dispatch({ type: ActionTypes.ADD_MATCH, payload: word });
 			selectedCells.forEach(cell => setMatchingCells(prev => new Set(prev.add(cell))))
@@ -198,6 +202,13 @@ const Started = () => {
 						</>
 					)}
 				<PokemonList isLoading={isLoading} handleLoading={setIsLoading} />
+				{matchSound && (
+					<Sound
+						url='/sounds/success.wav'
+						playStatus={Sound.status.PLAYING}
+						volume={60}
+					/>
+				)}
 			</div>
 			<Toaster renderType={'pokeball'} />
 		</div>

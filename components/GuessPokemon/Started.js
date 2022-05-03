@@ -24,6 +24,7 @@ const Started = () => {
 	const [matchesIds, setMatchesIds] = useState(new Set());
 	const [guessingStarted, setGuessingStarted] = useState(false);
 	const [backspaceSound, setBackspaceSound] = useState(false);
+	const [matchSound, setMatchSound] = useState(false);
 	const { difficulty } = useGameState();
 	const dispatch = useGameDispatch();
 
@@ -45,6 +46,7 @@ const Started = () => {
 			toast('Gotcha!', {
 				duration: 1000
 			})
+			setMatchSound(true);
 			if (difficulty === 'hard') {
 				handleShowImg(true);
 				setTimeout(() => {
@@ -72,6 +74,7 @@ const Started = () => {
 		e.preventDefault();
 		setGuessingStarted(true);
 		setBackspaceSound(false);
+		setMatchSound(false);
 		setWrongGuess(false);
 		const { key, keyCode } = e;
 		if (keyCode == keyCodeMap['tab']) return;
@@ -145,6 +148,13 @@ const Started = () => {
 						<Sound
 							url='/sounds/error.wav'
 							playStatus={Sound.status.PLAYING}
+						/>
+					)}
+					{matchSound && (
+						<Sound
+							url='/sounds/success.wav'
+							playStatus={Sound.status.PLAYING}
+							volume={60}
 						/>
 					)}
 				</div>

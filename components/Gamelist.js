@@ -60,6 +60,7 @@ const GameCard = ({ game = {}}) => {
 							src={imgUrl}
 							layout="fill"
 							objectFit="cover"
+							alt={game.name}
 						/>
 					</div>
 				<h3 className={nameClasses}>{name}</h3>

@@ -16,7 +16,7 @@ const Finishing = () => {
 
 	return (
 		<div className='fill-screen-vertical flex justify-center items-center'>
-			<div className='font-pokemon-solid text-7xl tracking-[.15em] animate-bounce'>Time's Up!</div>
+			<div className='font-pokemon-solid text-7xl tracking-[.15em] animate-bounce'>Time&apos;s Up!</div>
 		</div>
 	)
 }

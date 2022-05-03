@@ -20,6 +20,7 @@ const Started = () => {
 	const [matches, setMatches] = useState(new Set());
 	const [guessingStarted, setGuessingStarted] = useState(false);
 	const [backspaceSound, setBackspaceSound] = useState(false);
+	const [matchSound, setMatchSound] = useState(false);
 	const [toasterType, setToasterType] = useState('');
 	const { data } = usePokemonData('/pokemon?limit=151', false);
 	const matchesRef = useRef(null);
@@ -36,6 +37,7 @@ const Started = () => {
 				toast('Gotcha!', {
 					duration: 1000
 				})
+				setMatchSound(true);
 				setMatches(prev => new Set(prev.add(validMatch)));
 			} else {
 				setToasterType('already-got');
@@ -62,6 +64,7 @@ const Started = () => {
 		e.preventDefault();
 		setGuessingStarted(true);
 		setBackspaceSound(false);
+		setMatchSound(false);
 		setWrongGuess(false);
 		const { key, keyCode } = e;
 		if (keyCode == keyCodeMap['tab']) return;
@@ -88,7 +91,7 @@ const Started = () => {
 			<div ref={matchesRef} className='flex justify-center flex-wrap my-8 bg-red-200 rounded-lg max-h-[320px] overflow-y-auto'>
 				{!!matchesArr.length && matchesArr.map((match, idx) => {
 					const key = `match-${match}-${idx}`;
-					return <Match key={key} incomingData={{ data: match }} />
+					return <Match key={key} rawData={{ data: match }} type='dynamic' />
 				})}
 			</div>
 		);
@@ -106,28 +109,37 @@ const Started = () => {
 	}, [matchesRef, matches])
 
 	return (
-		<div className='w-full h-[70vh]'>
-			<div className='w-full h-full'>
-				<div className='w-9/12 flex flex-col items-center w-full h-full mx-auto'>
-					{renderMatches()}
-					{renderGuess()}
-					{!guessingStarted && !guess && !matches.size && <GuessPlaceholder text='Start typing!' />}
-					<Toaster renderType={toasterType}/>
-					{backspaceSound && (
-						<Sound
+		<>
+			<div className='w-full h-[70vh]'>
+				<div className='w-full h-full'>
+					<div className='w-9/12 flex flex-col items-center w-full h-full mx-auto'>
+						{renderMatches()}
+						{renderGuess()}
+						{!guessingStarted && !guess && !matches.size && <GuessPlaceholder text='Start typing!' />}
+						{backspaceSound && (
+							<Sound
 							url='/sounds/keypress.wav'
 							playStatus={Sound.status.PLAYING}
-						/>
-					)}
-					{wrongGuess && (
-						<Sound
+							/>
+						)}
+						{wrongGuess && (
+							<Sound
 							url='/sounds/error.wav'
 							playStatus={Sound.status.PLAYING}
-						/>
-					)}
+							/>
+						)}
+						{matchSound && (
+							<Sound
+								url='/sounds/success.wav'
+								playStatus={Sound.status.PLAYING}
+								volume={60}
+							/>
+						)}
+					</div>
 				</div>
 			</div>
-		</div>
+			<Toaster renderType={toasterType}/>
+		</>
 	)
 }
 

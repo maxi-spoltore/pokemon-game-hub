@@ -54,7 +54,7 @@ const GameBoard = ({ grid, matchingCells, handleCellSelection }) => {
 				<div className='absolute w-full h-full flex flex-col justify-center items-center z-10'>
 					<div className={contentClasses}>
 						<h3 className='text-4xl tracking-[.25em] mb-4'>Congratulations!</h3>
-						<p className='text-xl tracking-[.25em]'>You've catched 'em all!</p>
+						<p className='text-xl tracking-[.25em]'>You&apos;ve catched &apos;em all!</p>
 					</div>
 					<div className='animate-btn-slide-in'>
 						<ActionButton text='Start New Game' size='large' onClick={handleNewGame}/>

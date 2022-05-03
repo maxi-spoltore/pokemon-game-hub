@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
 import { Toaster as BaseToaster, ToastBar } from 'react-hot-toast';
-import Sound from 'react-sound';
 import Pokeball from './Pokeball';
 
 const Toaster = ({ renderType }) => {
@@ -21,18 +20,12 @@ const Toaster = ({ renderType }) => {
 						{({ message }) => (
 							<>
 								{renderType === 'pokeball' ? (
-									<>
-										<div className='flex flex-col items-center'>
-											<Pokeball />
-											<div className='font-pokemon-solid tracking-[.15em] mt-4 animate-bounce'>
-												{message}
-											</div>
+									<div className='flex flex-col items-center'>
+										<Pokeball />
+										<div className='font-pokemon-solid tracking-[.15em] mt-4 animate-bounce'>
+											{message}
 										</div>
-										<Sound
-											url='/sounds/success.wav'
-											playStatus={Sound.status.PLAYING}
-										/>
-									</>
+									</div>
 									) : (
 										<div className='text-xl text-center font-bold text-red-700 rounded-lg'>{message}</div>
 									)
